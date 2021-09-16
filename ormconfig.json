@@ -1,0 +1,20 @@
+[
+    {
+        "name": "TAC_CSGO",
+        "type": "mariadb",
+        "host": "tac-database.mariadb.database.azure.com",
+        "port": 3306,
+        "username": "agency@tac-database",
+        "password": "gZB4muGGvIBdKqMroQWW",
+        "database": "community_servers_csgo"
+    },
+    {
+        "name": "XPTO",
+        "type": "mariadb",
+        "host": "tac-database.mariadb.database.azure.com",
+        "port": 3306,
+        "username": "agency@tac-database",
+        "password": "gZB4muGGvIBdKqMroQWW",
+        "database": "community_servers_csgo"
+    }
+]

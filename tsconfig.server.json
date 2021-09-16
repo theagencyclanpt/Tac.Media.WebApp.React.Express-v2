@@ -1,0 +1,23 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "downlevelIteration": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "noEmitOnError": true,
+        "strict": false,
+        "alwaysStrict": false,
+        "noImplicitAny": false,
+        "typeRoots": [
+            "node_modules/@types/"
+        ]
+    },
+    "exclude": [
+        "./src/client"
+    ],
+    "include": [
+        "./src"
+    ]
+}

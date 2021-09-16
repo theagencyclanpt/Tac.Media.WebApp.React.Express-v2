@@ -1,0 +1,60 @@
+{
+  "Id": 1,
+  "Description": "Instragram",
+  "overlay": "/public/resources/banners/overlays/insta.png",
+  "Width": 1080,
+  "Height": 1920,
+  "Font": "35pt BebasNeue, Addictive",
+  "Inputs": [
+    {
+      "Type": "text",
+      "Label": "TITULO DO JOGO",
+      "X": 1040,
+      "Y": 600,
+      "Color": "#95191B",
+      "Font": "35pt BebasNeue",
+      "TextAlign": "right"
+    },
+    {
+      "Type": "time",
+      "Label": "HORA",
+      "X": 425,
+      "Y": 1420,
+      "Color": "white",
+      "Font": "60pt Addictive",
+      "TextAlign": "start"
+    },
+    {
+      "Type": "text",
+      "Label": "TWITCH",
+      "X": 565,
+      "Y": 1585,
+      "Color": "white",
+      "Font": "45pt BebasNeue",
+      "TextAlign": "center"
+    },
+    {
+      "Type": "image",
+      "Label": "EQUIPA 1",
+      "X": 205,
+      "Y": 893,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "Type": "image",
+      "Label": "EQUIPA 2",
+      "X": 692,
+      "Y": 893,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "Type": "image",
+      "Label": "CAMPEONATO LOGO (height 100px)",
+      "X": 830,
+      "Y": 450,
+      "max-height": 100
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+export * from "./banner-configuration.controller";

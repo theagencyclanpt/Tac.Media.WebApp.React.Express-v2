@@ -1,0 +1,1 @@
+type BannerConfigurationInputType = "Text" | "Hour" | "Image";
