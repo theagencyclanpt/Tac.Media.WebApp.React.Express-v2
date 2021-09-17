@@ -15,7 +15,7 @@
         ]
     },
     "exclude": [
-        "./src/client"
+        "./src/www"
     ],
     "include": [
         "./src"

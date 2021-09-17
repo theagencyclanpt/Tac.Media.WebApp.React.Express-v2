@@ -19,7 +19,7 @@
         ]
     },
     "include": [
-        "./src/client"
+        "./src/www"
     ],
     "exclude": [
         "./node_modules/**/*"

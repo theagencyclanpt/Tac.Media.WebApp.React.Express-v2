@@ -20,8 +20,11 @@
       "@/database/*": [
         "./src/database/*"
       ],
-      "@/client/components/*": [
-        "./src/client/components/*"
+      "@/ui/components/*": [
+        "src/www/components/*"
+      ],
+      "@/ui/hooks/*": [
+        "src/www/hooks/*"
       ]
     }
   },
