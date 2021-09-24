@@ -36,6 +36,8 @@ function Mount() {
     });
   }
 
+  app.use('/banner', express.static(path.join(__dirname, '..', 'temp', 'banners')));
+
   app.listen(PORT, () => {
     console.log(
       '\x1b[34m',

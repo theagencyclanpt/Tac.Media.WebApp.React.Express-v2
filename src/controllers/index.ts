@@ -1,1 +1,1 @@
-export * from "./banner-configuration.controller";
+export * from "./banner.controller";
