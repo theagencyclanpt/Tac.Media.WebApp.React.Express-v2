@@ -12,6 +12,8 @@ export function PreviewPage(): JSX.Element {
         <>
             <h1>Test {hash}</h1>
             <h4>Preview para o boundle {hash}</h4>
+
+            <img src={"http://localhost:4334/banner/" + hash + "/twitter.png"} alt="" />
         </>
     );
 }
