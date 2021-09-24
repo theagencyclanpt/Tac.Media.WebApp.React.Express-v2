@@ -1,9 +1,8 @@
 {
   "Id": 1,
   "Description": "Instragram",
-  "overlay": "/public/resources/banners/overlays/insta.png",
-  "Width": 1080,
-  "Height": 1920,
+  "Background": "/resources/background/insta.announcement.png",
+  "Overlay": "/resources/overlays/insta.png",
   "Font": "35pt BebasNeue, Addictive",
   "Inputs": [
     {

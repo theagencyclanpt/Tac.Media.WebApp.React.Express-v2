@@ -39,7 +39,8 @@ function Mount() {
     app.use(Cors({ origin: "http://localhost:4333" }));
   }
 
-  app.use('/banner', express.static(path.join(__dirname, '..', 'temp', 'banners')));
+  app.use('/temp', express.static(path.join(__dirname, '..', 'temp', 'banners')));
+  app.use('/resources', express.static(path.join(__dirname, '..', 'resources')));
 
   app.listen(PORT, () => {
     console.log(

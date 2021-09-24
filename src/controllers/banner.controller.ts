@@ -46,14 +46,12 @@ export class BannerController extends BaseController {
             const directoryName = u_v1();
             const directory = await this.Mkdir(directoryName);
             await this.SaveImageOnTempDirectory(directory, "twitter", Group.TwitterImageBase64);
-            // await this.SaveImageOnTempDirectory(directory, "twitter", Group.TwitterImageBase64);
-
-            console.log("asdasd");
+            // await this.SaveImageOnTempDirectory(directory, "instagram", Group.InstagramImageBase64);
 
             return "/preview/" + directoryName;
         }
 
-        return "asdasd";
+        throw new LogicError("A aplicação só suporte fazer grupo de banners.");
     }
 
     private async SaveImageOnTempDirectory(directory, imageName: string, imageBase64: string): Promise<void> {

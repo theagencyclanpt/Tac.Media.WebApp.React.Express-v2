@@ -1,3 +1,4 @@
+import { Card } from '@/ui/components/card';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -11,9 +12,13 @@ export function PreviewPage(): JSX.Element {
     return (
         <>
             <h1>Test {hash}</h1>
-            <h4>Preview para o boundle {hash}</h4>
+            <h4>Preview para o grupo {hash}</h4>
 
-            <img src={"http://localhost:4334/banner/" + hash + "/twitter.png"} alt="" />
+            <Card width={979} height={704} className="banner-card" >
+                <div className="banner-preview banner-preview__desktop">
+                    <img src={"http://localhost:4334/banner/" + hash + "/twitter.png"} alt="" />
+                </div>
+            </Card>
         </>
     );
 }

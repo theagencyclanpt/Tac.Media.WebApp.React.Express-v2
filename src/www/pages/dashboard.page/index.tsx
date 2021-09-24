@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import "./styles.scss";
 import { Card } from "@/ui/components/card";
-import { Canvas } from "@/ui/components/canvas";
+import { Canvas, DrawElement } from "@/ui/components/canvas";
 import { useHistory } from 'react-router-dom';
 
 
@@ -30,27 +30,39 @@ function DesktopLayout({ OnPulbish, PreviewImg }: DesktopLayoutProps): JSX.Eleme
 
 export function DashboardPage(): JSX.Element {
     const [isMobile, setIsMobile] = useState(false);
+    const [drawElements, setDrawElements] = useState<DrawElement[]>([] as DrawElement[]);
     const history = useHistory();
     const previewImgRef = useRef(null);
     const previewImg = (<img ref={previewImgRef} crossOrigin="anonymous" />);
 
     async function onPulbish(): Promise<void> {
-        const result = await fetch("/api/banner/generate-url", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                Group: {
-                    TwitterImageBase64: previewImgRef.current.src
-                }
-            })
-        });
+        setDrawElements([{
+            type: "shape",
+            x: 560,
+            y: 850,
+            extra: {
+                width: 300,
+                height: 50,
+                color: "#95191B"
+            }
+        }])
 
-        const resultData = await result.json();
+        // const result = await fetch("/api/banner/generate-url", {
+        //     method: "POST",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         Group: {
+        //             TwitterImageBase64: previewImgRef.current.src
+        //         }
+        //     })
+        // });
 
-        history.push(resultData.result)
+        // const resultData = await result.json();
+
+        // history.push(resultData.result)
     }
 
     function onRender(image: string) {
@@ -61,7 +73,9 @@ export function DashboardPage(): JSX.Element {
         <>
             <Canvas
                 OnRender={onRender}
-                BackgroundImage="http://localhost:4334/banner/insta.jpg" />
+                BackgroundImage="/resources/background/twitter.announcement.png"
+                DrawElements={drawElements}
+            />
             {
                 isMobile ?
                     null :

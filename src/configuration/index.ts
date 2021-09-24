@@ -1,6 +1,6 @@
 import { BannerConfiguration } from "../models/BannerConfiguration";
-import InstagramNormalConfiguration from "./normal.instagram.json";
+import InstagramAnnouncement from "./instagram.announcement.json";
 
 export default [
-    InstagramNormalConfiguration
+    InstagramAnnouncement
 ] as BannerConfiguration[];
