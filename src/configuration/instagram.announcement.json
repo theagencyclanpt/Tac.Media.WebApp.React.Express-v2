@@ -1,5 +1,6 @@
 {
   "Id": 1,
+  "Type": "instagram",
   "Description": "Instragram",
   "Background": "/resources/background/insta.announcement.png",
   "Overlay": "/resources/overlays/insta.png",

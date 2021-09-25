@@ -1,52 +1,51 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import "./styles.scss";
-import { Card } from "@/ui/components/card";
 import { Canvas, DrawElement } from "@/ui/components/canvas";
-import { useHistory } from 'react-router-dom';
+import { DesktopLayout } from "./desktop.layout";
 
-
-interface DesktopLayoutProps {
-    OnPulbish: () => void,
-    PreviewImg: JSX.Element,
+interface CanvasProps {
+    Background: string;
+    Overlay?: string;
+    Font?: string;
 }
 
-function DesktopLayout({ OnPulbish, PreviewImg }: DesktopLayoutProps): JSX.Element {
-
-    return (
-        <div className="layout">
-            <div className="layout-content">
-                <Card className="banner-card" width={460} height={704} >
-                    <button onClick={OnPulbish}>Publicar</button>
-                </Card>
-                <Card width={979} height={704} className="banner-card" >
-                    <div className="banner-preview banner-preview__desktop">
-                        {PreviewImg}
-                    </div>
-                </Card>
-            </div>
-        </div>
-    );
-}
+export type PreviewType = "instagram" | "twitter";
 
 export function DashboardPage(): JSX.Element {
-    const [isMobile, setIsMobile] = useState(false);
+    const [previewType, setPreviewType] = useState<PreviewType>("twitter")
     const [drawElements, setDrawElements] = useState<DrawElement[]>([] as DrawElement[]);
-    const history = useHistory();
+    const [canvasProps, setCanvasProps] = useState<CanvasProps>();
     const previewImgRef = useRef(null);
     const previewImg = (<img ref={previewImgRef} crossOrigin="anonymous" />);
 
-    async function onPulbish(): Promise<void> {
-        setDrawElements([{
-            type: "shape",
-            x: 560,
-            y: 850,
-            extra: {
-                width: 300,
-                height: 50,
-                color: "#95191B"
+    useEffect(() => {
+        fetch("/api/banner/configurationById?id=1", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
-        }])
+        })
+            .then(r => r.json())
+            .then(data => {
+                const result = data.result;
 
+                setPreviewType("instagram");
+
+                setCanvasProps({
+                    Background: result.Background,
+                    Overlay: result.Overlay,
+                    Font: result.Font
+                });
+
+
+            }
+            );
+    }, []);
+
+
+    async function onPulbish(): Promise<void> {
+        setPreviewType("twitter");
         // const result = await fetch("/api/banner/generate-url", {
         //     method: "POST",
         //     headers: {
@@ -61,8 +60,7 @@ export function DashboardPage(): JSX.Element {
         // });
 
         // const resultData = await result.json();
-
-        // history.push(resultData.result)
+        // alert(resultData.result);
     }
 
     function onRender(image: string) {
@@ -71,19 +69,16 @@ export function DashboardPage(): JSX.Element {
 
     return (
         <>
-            <Canvas
+            {canvasProps && <Canvas
                 OnRender={onRender}
-                BackgroundImage="/resources/background/twitter.announcement.png"
+                BackgroundImage={canvasProps.Background}
                 DrawElements={drawElements}
+            />}
+            <DesktopLayout
+                OnPulbish={onPulbish}
+                PreviewType={previewType}
+                PreviewImgElement={previewImg}
             />
-            {
-                isMobile ?
-                    null :
-                    <DesktopLayout
-                        OnPulbish={onPulbish}
-                        PreviewImg={previewImg}
-                    />
-            }
         </>
     );
 }

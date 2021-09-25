@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface CardProps {
     width: number;
@@ -11,18 +11,15 @@ interface CardProps {
 
 export function Card({ width, height, onClick, className, children, title }: CardProps) {
     const [clickable, setClickable] = useState<boolean>(false);
-    const [style, setStyle] = useState<React.CSSProperties>({
+    const style: React.CSSProperties = {
         width: width,
         height: height,
         borderRadius: "17px"
-    });
+    };
 
     if (onClick && !clickable) {
         setClickable(true);
-        setStyle({
-            ...style,
-            cursor: "pointer"
-        });
+        style.cursor = "pointer";
     }
 
     function onClickHandler() {
