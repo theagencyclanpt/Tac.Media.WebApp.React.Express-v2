@@ -5,6 +5,7 @@ import path from 'path';
 import dotenv from "dotenv";
 import * as Controllers from "./controllers";
 import { ErrorHandler } from "@/lib/handlers";
+import Configurations from "@/lib/configurations";
 import Cors from "cors";
 
 dotenv.config();
@@ -19,8 +20,13 @@ app.use(express.json({ limit: "150mb" }));
 app.use(express.urlencoded({ extended: true, limit: "150mb" }));
 
 function Mount() {
+  Configurations.register("asd", "TU NÃO MANDAS");
+
   Object.values(Controllers).forEach(controller => {
     const t = new controller;
+
+    console.log(t["_bannerConfiguration"]);
+
     t.Map(app);
   });
 

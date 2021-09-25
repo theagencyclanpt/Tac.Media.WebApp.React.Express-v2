@@ -14,19 +14,22 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType }: Des
         height: 704,
     };
 
+    function OnClickImage() {
+        alert("clickec");
+    }
+
     return (
         <div className="layout">
             <div className="layout-content">
-                <h1>AA {previewSettings.width}</h1>
                 <Card className="banner-card" width={460} height={704} >
                     <button onClick={OnPulbish}>Publicar</button>
                 </Card>
                 <Card width={previewSettings.width} height={previewSettings.height} className="banner-card" >
-                    <div className="banner-preview banner-preview__desktop">
+                    <div className="banner-preview banner-preview__desktop" onClick={OnClickImage}>
                         {PreviewImgElement}
                     </div>
                 </Card>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

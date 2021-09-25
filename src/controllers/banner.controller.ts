@@ -1,5 +1,5 @@
 import { BaseController } from "@/lib/base.controller";
-import { Controller, Get, Post, RequestBody, RequestQuery } from "@/lib/decorators";
+import { Controller, Get, Post, RequestBody, RequestQuery, InjectConfiguration } from "@/lib/decorators";
 import { LogicError } from "@/lib/entities";
 import { BannerConfiguration } from "../models/BannerConfiguration";
 import BannerConfigurations from "../configuration";
@@ -22,6 +22,9 @@ interface GenerateBannerUrlRequestBody {
 @Controller("/banner")
 export class BannerController extends BaseController {
     private _tempDirectory = p_join(__dirname, '..', '..', 'temp', 'banners')
+
+    @InjectConfiguration("asd")
+    private _bannerConfiguration: string;
 
     @Get("/configurations")
     GetBannerConfigurations(): BannerConfiguration[] {

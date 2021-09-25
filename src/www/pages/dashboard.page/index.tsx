@@ -12,7 +12,7 @@ interface CanvasProps {
 export type PreviewType = "instagram" | "twitter";
 
 export function DashboardPage(): JSX.Element {
-    const [previewType, setPreviewType] = useState<PreviewType>("twitter")
+    const [previewType, setPreviewType] = useState<PreviewType>("instagram")
     const [drawElements, setDrawElements] = useState<DrawElement[]>([] as DrawElement[]);
     const [canvasProps, setCanvasProps] = useState<CanvasProps>();
     const previewImgRef = useRef(null);
@@ -37,8 +37,6 @@ export function DashboardPage(): JSX.Element {
                     Overlay: result.Overlay,
                     Font: result.Font
                 });
-
-
             }
             );
     }, []);
