@@ -30,7 +30,7 @@ export function DashboardPage(): JSX.Element {
             .then(data => {
                 const result = data.result;
 
-                setPreviewType("instagram");
+                setPreviewType(result.Type);
 
                 setCanvasProps({
                     Background: result.Background,
@@ -45,22 +45,21 @@ export function DashboardPage(): JSX.Element {
 
 
     async function onPulbish(): Promise<void> {
-        setPreviewType("twitter");
-        // const result = await fetch("/api/banner/generate-url", {
-        //     method: "POST",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         Group: {
-        //             TwitterImageBase64: previewImgRef.current.src
-        //         }
-        //     })
-        // });
+        const result = await fetch("/api/banner/generate-url", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Group: {
+                    TwitterImageBase64: previewImgRef.current.src
+                }
+            })
+        });
 
-        // const resultData = await result.json();
-        // alert(resultData.result);
+        const resultData = await result.json();
+        alert(resultData.result);
     }
 
     function onRender(image: string) {
