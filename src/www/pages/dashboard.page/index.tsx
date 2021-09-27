@@ -7,19 +7,33 @@ interface CanvasProps {
     Background: string;
     Overlay?: string;
     Font?: string;
+    OnRender?: (image: string) => void;
 }
 
 export type PreviewType = "instagram" | "twitter";
+
+type BannerConfigurationType = "instagram" | "twitter";
+
+interface BannerConfiguration {
+    Id: number;
+    Type: BannerConfigurationType;
+    Description: string;
+    Background: string;
+    Overlay: string;
+    Font: string;
+}
 
 export function DashboardPage(): JSX.Element {
     const [previewType, setPreviewType] = useState<PreviewType>("instagram")
     const [drawElements, setDrawElements] = useState<DrawElement[]>([] as DrawElement[]);
     const [canvasProps, setCanvasProps] = useState<CanvasProps>();
     const previewImgRef = useRef(null);
-    const previewImg = (<img ref={previewImgRef} crossOrigin="anonymous" />);
+    const previewImgElement = (<img ref={previewImgRef} crossOrigin="anonymous" />);
+    const [instagramSettings, setInstagramSettings] = useState<BannerConfiguration>();
+    const [twitterSettings, setTwitterSettings] = useState<BannerConfiguration>();
 
     useEffect(() => {
-        fetch("/api/banner/configurationById?id=1", {
+        fetch("/api/banner/group/configuration/1", {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -30,12 +44,17 @@ export function DashboardPage(): JSX.Element {
             .then(data => {
                 const result = data.result;
 
-                setPreviewType(result.Type);
+
+                setInstagramSettings(result.Instagram);
+                setTwitterSettings(result.Twitter);
+
+                setPreviewType("instagram");
 
                 setCanvasProps({
-                    Background: result.Background,
-                    Overlay: result.Overlay,
-                    Font: result.Font
+                    Background: result.Instagram.Background,
+                    Overlay: result.Instagram.Overlay,
+                    Font: result.Instagram.Font,
+                    OnRender: onRender
                 });
             }
             );
@@ -66,13 +85,32 @@ export function DashboardPage(): JSX.Element {
     }
 
     function OnChangePreviewType(previewType: PreviewType) {
-        setPreviewType(previewType);
+        function customRender(image: string) {
+            setPreviewType(previewType);
+            onRender(image);
+        }
+
+        if (previewType === "instagram") {
+            setCanvasProps({
+                Background: instagramSettings.Background,
+                Overlay: instagramSettings.Overlay,
+                Font: instagramSettings.Font,
+                OnRender: customRender
+            });
+        } else if (previewType === "twitter") {
+            setCanvasProps({
+                Background: twitterSettings.Background,
+                Overlay: twitterSettings.Overlay,
+                Font: twitterSettings.Font,
+                OnRender: customRender
+            });
+        }
     }
 
     return (
         <>
             {canvasProps && <Canvas
-                OnRender={onRender}
+                OnRender={canvasProps.OnRender}
                 BackgroundImage={canvasProps.Background}
                 DrawElements={drawElements}
             />}
@@ -80,7 +118,7 @@ export function DashboardPage(): JSX.Element {
                 OnPulbish={onPulbish}
                 OnChangePreviewType={OnChangePreviewType}
                 PreviewType={previewType}
-                PreviewImgElement={previewImg}
+                PreviewImgElement={previewImgElement}
             />
         </>
     );

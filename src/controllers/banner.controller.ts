@@ -1,10 +1,12 @@
 import { BaseController } from "@/lib/base.controller";
-import { Controller, Get, Post, RequestBody, RequestQuery, InjectConfiguration } from "@/lib/decorators";
+import { Controller, Get, Post, RequestBody, RequestQuery, InjectConfiguration, RequestParams } from "@/lib/decorators";
 import { LogicError } from "@/lib/entities";
 import { BannerConfiguration } from "@/model/BannerConfiguration";
 import { GetBannerConfigurationByIdRequest } from "@/model/GetBannerConfigurationByIdRequest";
 import { GenerateBannerUrlRequest } from "@/model/GenerateBannerUrlRequest";
-import BannerConfigurations from "../configuration";
+import { GetGroupBannerConfigurationRequest } from "@/model/GetGroupBannerConfigurationRequest";
+import { GroupBannerConfiguration } from "@/model/GroupBannerConfiguration";
+import { IndividualConfigurations, GroupConfigurations } from "../configuration";
 import { writeFile, mkdir as fs_mkdir } from "fs";
 import { join as p_join } from "path";
 import { v1 as u_v1 } from "uuid";
@@ -14,14 +16,19 @@ export class BannerController extends BaseController {
     @InjectConfiguration("DIRECTORY_TEMP")
     private _tempDirectory: string;
 
+    @Get("/group/configuration/:id")
+    GetGroupBannerConfiguration(@RequestParams { id }: GetGroupBannerConfigurationRequest): GroupBannerConfiguration {
+        return GroupConfigurations.find(e => e.Id == id);
+    }
+
     @Get("/configurations")
     GetBannerConfigurations(): BannerConfiguration[] {
-        return BannerConfigurations;
+        return IndividualConfigurations;
     }
 
     @Get("/configurationById")
     GetBannerConfigurationById(@RequestQuery { id }: GetBannerConfigurationByIdRequest): BannerConfiguration {
-        const result = BannerConfigurations.find(e => e.Id == id);
+        const result = IndividualConfigurations.find(e => e.Id == id);
 
         if (!result) {
             throw new LogicError("O template selecionado é inválido.");

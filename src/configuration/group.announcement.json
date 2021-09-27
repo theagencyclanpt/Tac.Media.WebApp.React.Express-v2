@@ -1,0 +1,124 @@
+{
+    "Id": 1,
+    "Description": "Group for Twitter and Instagram",
+    "Instagram": {
+        "Id": 1,
+        "Type": "instagram",
+        "Description": "Instragram",
+        "Background": "/resources/background/insta.announcement.png",
+        "Overlay": "/resources/overlays/insta.png",
+        "Font": "35pt BebasNeue, Addictive",
+        "Inputs": [
+            {
+                "Type": "text",
+                "Label": "TITULO DO JOGO",
+                "X": 1040,
+                "Y": 600,
+                "Color": "#95191B",
+                "Font": "35pt BebasNeue",
+                "TextAlign": "right"
+            },
+            {
+                "Type": "time",
+                "Label": "HORA",
+                "X": 425,
+                "Y": 1420,
+                "Color": "white",
+                "Font": "60pt Addictive",
+                "TextAlign": "start"
+            },
+            {
+                "Type": "text",
+                "Label": "TWITCH",
+                "X": 565,
+                "Y": 1585,
+                "Color": "white",
+                "Font": "45pt BebasNeue",
+                "TextAlign": "center"
+            },
+            {
+                "Type": "image",
+                "Label": "EQUIPA 1",
+                "X": 205,
+                "Y": 893,
+                "width": 160,
+                "height": 160
+            },
+            {
+                "Type": "image",
+                "Label": "EQUIPA 2",
+                "X": 692,
+                "Y": 893,
+                "width": 160,
+                "height": 160
+            },
+            {
+                "Type": "image",
+                "Label": "CAMPEONATO LOGO (height 100px)",
+                "X": 830,
+                "Y": 450,
+                "max-height": 100
+            }
+        ]
+    },
+    "Twitter": {
+        "Id": 2,
+        "Type": "twitter",
+        "Description": "Twitter",
+        "Background": "/resources/background/twitter.announcement.png",
+        "Overlay": "/resources/overlays/insta.png",
+        "Font": "35pt BebasNeue, Addictive",
+        "Inputs": [
+            {
+                "Type": "text",
+                "Label": "TITULO DO JOGO",
+                "X": 1040,
+                "Y": 600,
+                "Color": "#95191B",
+                "Font": "35pt BebasNeue",
+                "TextAlign": "right"
+            },
+            {
+                "Type": "time",
+                "Label": "HORA",
+                "X": 425,
+                "Y": 1420,
+                "Color": "white",
+                "Font": "60pt Addictive",
+                "TextAlign": "start"
+            },
+            {
+                "Type": "text",
+                "Label": "TWITCH",
+                "X": 565,
+                "Y": 1585,
+                "Color": "white",
+                "Font": "45pt BebasNeue",
+                "TextAlign": "center"
+            },
+            {
+                "Type": "image",
+                "Label": "EQUIPA 1",
+                "X": 205,
+                "Y": 893,
+                "width": 160,
+                "height": 160
+            },
+            {
+                "Type": "image",
+                "Label": "EQUIPA 2",
+                "X": 692,
+                "Y": 893,
+                "width": 160,
+                "height": 160
+            },
+            {
+                "Type": "image",
+                "Label": "CAMPEONATO LOGO (height 100px)",
+                "X": 830,
+                "Y": 450,
+                "max-height": 100
+            }
+        ]
+    }
+}
