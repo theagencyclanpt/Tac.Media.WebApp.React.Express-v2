@@ -10,20 +10,18 @@ interface CardProps {
 }
 
 export function Card({ width, height, onClick, className, children, title }: CardProps) {
-    const [clickable, setClickable] = useState<boolean>(false);
     const style: React.CSSProperties = {
         width: width,
         height: height,
         borderRadius: "17px"
     };
 
-    if (onClick && !clickable) {
-        setClickable(true);
+    if (onClick) {
         style.cursor = "pointer";
     }
 
     function onClickHandler() {
-        if (clickable) {
+        if (onClick) {
             onClick();
         }
     }

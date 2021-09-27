@@ -65,6 +65,10 @@ export function DashboardPage(): JSX.Element {
         previewImgRef.current.src = image;
     }
 
+    function OnChangePreviewType(previewType: PreviewType) {
+        setPreviewType(previewType);
+    }
+
     return (
         <>
             {canvasProps && <Canvas
@@ -74,6 +78,7 @@ export function DashboardPage(): JSX.Element {
             />}
             <DesktopLayout
                 OnPulbish={onPulbish}
+                OnChangePreviewType={OnChangePreviewType}
                 PreviewType={previewType}
                 PreviewImgElement={previewImg}
             />
