@@ -42,7 +42,7 @@ export class Application {
     }
 
     useControllers(controllers: any[]): this {
-        Object.values(controllers).forEach(controller => {
+        controllers.forEach(controller => {
             const t = new controller;
 
             if (this._configurations) {
