@@ -5,7 +5,7 @@ import { BannerConfiguration } from "@/model/BannerConfiguration";
 import { GetBannerConfigurationByIdRequest } from "@/model/GetBannerConfigurationByIdRequest";
 import { GenerateBannerUrlRequest } from "@/model/GenerateBannerUrlRequest";
 import BannerConfigurations from "../configuration";
-import { writeFile, mkdir as fs_mkdir, existsSync } from "fs";
+import { writeFile, mkdir as fs_mkdir } from "fs";
 import { join as p_join } from "path";
 import { v1 as u_v1 } from "uuid";
 
@@ -37,7 +37,7 @@ export class BannerController extends BaseController {
             const directoryName = u_v1();
             const directory = await this.Mkdir(directoryName);
             await this.SaveImageOnTempDirectory(directory, "instagram", Group.InstagramImageBase64);
-            // await this.SaveImageOnTempDirectory(directory, "instagram", Group.InstagramImageBase64);
+            await this.SaveImageOnTempDirectory(directory, "twitter", Group.TwitterImageBase64);
 
             return "/preview/" + directoryName;
         }
