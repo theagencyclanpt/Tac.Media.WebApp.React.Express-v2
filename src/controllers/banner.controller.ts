@@ -1,30 +1,18 @@
 import { BaseController } from "@/lib/base.controller";
 import { Controller, Get, Post, RequestBody, RequestQuery, InjectConfiguration } from "@/lib/decorators";
 import { LogicError } from "@/lib/entities";
-import { BannerConfiguration } from "../models/BannerConfiguration";
+import { BannerConfiguration } from "@/model/BannerConfiguration";
+import { GetBannerConfigurationByIdRequest } from "@/model/GetBannerConfigurationByIdRequest";
+import { GenerateBannerUrlRequest } from "@/model/GenerateBannerUrlRequest";
 import BannerConfigurations from "../configuration";
-import { writeFile, mkdir as fs_mkdir } from "fs";
+import { writeFile, mkdir as fs_mkdir, existsSync } from "fs";
 import { join as p_join } from "path";
 import { v1 as u_v1 } from "uuid";
 
-interface GetBannerConfigurationByIdRequestQuery {
-    id: number;
-}
-
-interface GenerateBannerUrlRequestBody {
-    ImageBase64?: string;
-    Group: {
-        InstagramImageBase64: string;
-        TwitterImageBase64: string;
-    };
-}
-
 @Controller("/banner")
 export class BannerController extends BaseController {
-    private _tempDirectory = p_join(__dirname, '..', '..', 'temp', 'banners')
-
-    @InjectConfiguration("asd")
-    private _bannerConfiguration: string;
+    @InjectConfiguration("DIRECTORY_TEMP")
+    private _tempDirectory: string;
 
     @Get("/configurations")
     GetBannerConfigurations(): BannerConfiguration[] {
@@ -32,7 +20,7 @@ export class BannerController extends BaseController {
     }
 
     @Get("/configurationById")
-    GetBannerConfigurationById(@RequestQuery { id }: GetBannerConfigurationByIdRequestQuery): BannerConfiguration {
+    GetBannerConfigurationById(@RequestQuery { id }: GetBannerConfigurationByIdRequest): BannerConfiguration {
         const result = BannerConfigurations.find(e => e.Id == id);
 
         if (!result) {
@@ -43,12 +31,12 @@ export class BannerController extends BaseController {
     }
 
     @Post("/generate-url")
-    async GenerateBannerUrl(@RequestBody { ImageBase64, Group }: GenerateBannerUrlRequestBody): Promise<string> {
+    async GenerateBannerUrl(@RequestBody { Group }: GenerateBannerUrlRequest): Promise<string> {
 
         if (Group) {
             const directoryName = u_v1();
             const directory = await this.Mkdir(directoryName);
-            await this.SaveImageOnTempDirectory(directory, "twitter", Group.TwitterImageBase64);
+            await this.SaveImageOnTempDirectory(directory, "instagram", Group.InstagramImageBase64);
             // await this.SaveImageOnTempDirectory(directory, "instagram", Group.InstagramImageBase64);
 
             return "/preview/" + directoryName;
@@ -70,7 +58,7 @@ export class BannerController extends BaseController {
     }
 
     private async Mkdir(directoryName: string): Promise<string> {
-        const path = p_join(this._tempDirectory, directoryName);
+        const path = p_join(this._tempDirectory, "banners", directoryName);
 
         return new Promise((resolve, reject) => {
             fs_mkdir(path, (err) => {

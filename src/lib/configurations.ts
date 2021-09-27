@@ -1,4 +1,3 @@
-
 export class Configurations {
 
     private _registry: { [key: string]: any } = {};
@@ -12,11 +11,13 @@ export class Configurations {
         }
     }
 
-    public add(key: string, value: any) {
+    public add(key: string, value: any): this {
         const registered = this._registry[key];
         if (registered) {
             throw new Error(`Error: ${key} is already registered.`);
         }
         this._registry[key] = value;
+
+        return this;
     }
 }

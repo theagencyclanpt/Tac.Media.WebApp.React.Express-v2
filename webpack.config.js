@@ -67,6 +67,7 @@ module.exports = {
         proxy: {
             '/api': 'http://localhost:' + _apiPort,
             '/resources': 'http://localhost:' + _apiPort,
+            '/temp': 'http://localhost:' + _apiPort,
         },
     }
 };

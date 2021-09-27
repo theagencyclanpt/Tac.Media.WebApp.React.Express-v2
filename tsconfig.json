@@ -17,6 +17,9 @@
       "@/lib": [
         "./src/lib"
       ],
+      "@/model/*": [
+        "./src/models/*"
+      ],
       "@/database/*": [
         "./src/database/*"
       ],

@@ -14,9 +14,9 @@ export function PreviewPage(): JSX.Element {
             <h1>Test {hash}</h1>
             <h4>Preview para o grupo {hash}</h4>
 
-            <Card width={979} height={704} className="banner-card" >
+            <Card width={400} height={704} className="banner-card" >
                 <div className="banner-preview banner-preview__desktop">
-                    <img src={"http://localhost:4334/banner/" + hash + "/twitter.png"} alt="" />
+                    <img src={"/temp/banners/" + hash + "/instagram.png"} alt="" />
                 </div>
             </Card>
         </>

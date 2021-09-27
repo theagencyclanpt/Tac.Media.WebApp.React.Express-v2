@@ -51,7 +51,7 @@ export function DashboardPage(): JSX.Element {
             },
             body: JSON.stringify({
                 Group: {
-                    TwitterImageBase64: previewImgRef.current.src
+                    InstagramImageBase64: previewImgRef.current.src
                 }
             })
         });

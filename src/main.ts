@@ -4,21 +4,43 @@ import dotenv from "dotenv";
 import { Application } from "@/lib";
 import * as Controllers from "./controllers";
 import Cors from "cors";
+import { access as fs_access, mkdir as fs_mkdir } from "fs";
 
 dotenv.config();
 
 const PUBLIC_URL: string = process.env.PUBLIC_URL || '';
 const PORT: string = process.env.API_PORT || '3000';
 const isProduction: boolean = process.env.ENV != "development";
+const directoryTemp = isProduction ? path.join(__dirname, 'temp') : path.join(__dirname, '..', 'temp');
+const resources = isProduction ? path.join(__dirname, 'resources') : path.join(__dirname, '..', 'resources');
+
+fs_access(directoryTemp, function (error) {
+  if (error) {
+    fs_mkdir(directoryTemp, (err) => {
+      if (!err) {
+        fs_mkdir(path.join(directoryTemp, "banners"), (err) => err && console.log(err))
+      } else {
+        console.log(err);
+      }
+    });
+  }
+});
 
 const _application = new Application();
 
 _application
   .useErrorHandler()
   .useConfigurations(
-    (provider) => provider.add("asd", "OLÁ TEST")
+    (provider) => provider
+      .add("DIRECTORY_TEMP", directoryTemp)
   )
   .useControllers(Object.values(Controllers))
+  .addApplicationConfiguration(
+    (provider) => {
+      provider.use('/temp', _application.addStaticFiles(directoryTemp));
+      provider.use('/resources', _application.addStaticFiles(resources));
+    }
+  )
   .addApplicationConfiguration(
     (provider) => {
       if (isProduction) {
@@ -33,12 +55,6 @@ _application
       } else {
         provider.use(Cors({ origin: "http://localhost:4333" }));
       }
-    }
-  )
-  .addApplicationConfiguration(
-    (provider) => {
-      provider.use('/temp', _application.addStaticFiles(path.join(__dirname, '..', 'temp', 'banners')));
-      provider.use('/resources', _application.addStaticFiles(path.join(__dirname, '..', 'resources')));
     }
   )
   .listen(PORT);
