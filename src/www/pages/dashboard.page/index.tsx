@@ -31,6 +31,8 @@ export function DashboardPage(): JSX.Element {
     const previewImgElement = (<img ref={previewImgRef} crossOrigin="anonymous" />);
     const [instagramSettings, setInstagramSettings] = useState<BannerConfiguration>();
     const [twitterSettings, setTwitterSettings] = useState<BannerConfiguration>();
+    let instagramImage: string = null;
+    let twitterImage: string = null;
 
     useEffect(() => {
         fetch("/api/banner/group/configuration/1", {
@@ -60,24 +62,46 @@ export function DashboardPage(): JSX.Element {
             );
     }, []);
 
+    async function generateImageToPublish(): Promise<void> {
+        if (instagramImage && twitterImage) {
+            const result = await fetch("/api/banner/generate-url", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Group: {
+                        InstagramImageBase64: instagramImage,
+                        TwitterImageBase64: twitterImage
+                    }
+                })
+            });
 
-    async function onPulbish(): Promise<void> {
-        const result = await fetch("/api/banner/generate-url", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                Group: {
-                    InstagramImageBase64: previewImgRef.current.src,
-                    TwitterImageBase64: previewImgRef.current.src
-                }
-            })
+            const resultData = await result.json();
+            alert(resultData.result);
+        }
+    }
+
+    function onPulbish(): void {
+        setCanvasProps({
+            Background: instagramSettings.Background,
+            Overlay: instagramSettings.Overlay,
+            Font: instagramSettings.Font,
+            OnRender: (image: string) => {
+                instagramImage = image;
+                console.log("TEST", instagramImage);
+                setCanvasProps({
+                    Background: twitterSettings.Background,
+                    Overlay: twitterSettings.Overlay,
+                    Font: twitterSettings.Font,
+                    OnRender: async (image: string) => {
+                        twitterImage = image;
+                        await generateImageToPublish();
+                    }
+                });
+            }
         });
-
-        const resultData = await result.json();
-        alert(resultData.result);
     }
 
     function onRender(image: string) {
