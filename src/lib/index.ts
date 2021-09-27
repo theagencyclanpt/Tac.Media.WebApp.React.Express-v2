@@ -4,3 +4,4 @@ export * from "./decorators";
 export * from "./handlers";
 export * from "./database";
 export * from "./configurations"
+export * from "./app";

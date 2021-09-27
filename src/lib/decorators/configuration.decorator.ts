@@ -1,10 +1,23 @@
-import Configurations from "../configurations";
+import { Configurations } from "@/lib/configurations";
 
-export function InjectConfiguration(key: string) {
-    return (target: any, property: string) => {
+export function InjectConfiguration(configurationName: string) {
+    return (target: any, key: string) => {
 
-        console.log(Configurations.getRegistered(key));
+        // property getter
+        const getter = function () {
+            const _configurations = this["__aplication__configurations"] as Configurations;
+            return _configurations.get(configurationName);
+        };
 
-        // target[property] = Configurations.getRegistered(key);
-    };
+        // Delete property.
+        if (delete this[key]) {
+
+            // Create new property with getter and setter
+            Object.defineProperty(target, key, {
+                get: getter,
+                enumerable: true,
+                configurable: true
+            });
+        }
+    }
 }

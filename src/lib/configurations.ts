@@ -1,10 +1,10 @@
-/* eslint-disable no-var */
-var registry: { [key: string]: any } = {};
 
-export default class Configurations {
+export class Configurations {
 
-    static getRegistered(key: string): any {
-        const registered = registry[key];
+    private _registry: { [key: string]: any } = {};
+
+    public get(key: string): any {
+        const registered = this._registry[key];
         if (registered) {
             return registered;
         } else {
@@ -12,11 +12,11 @@ export default class Configurations {
         }
     }
 
-    static register(key: string, value: any) {
-        const registered = registry[key];
+    public add(key: string, value: any) {
+        const registered = this._registry[key];
         if (registered) {
             throw new Error(`Error: ${key} is already registered.`);
         }
-        registry[key] = value;
+        this._registry[key] = value;
     }
 }

@@ -28,6 +28,7 @@ export class BannerController extends BaseController {
 
     @Get("/configurations")
     GetBannerConfigurations(): BannerConfiguration[] {
+        console.log("@TEST", this._bannerConfiguration);
         return BannerConfigurations;
     }
 
