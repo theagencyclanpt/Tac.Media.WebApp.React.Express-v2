@@ -7,7 +7,8 @@ type DrawElementTextAlign = "center" | "rigth" | "left";
 export interface DrawElementText {
     color: string,
     font: string,
-    textAlign: DrawElementTextAlign
+    textAlign: DrawElementTextAlign,
+    value: string | number,
 }
 
 export interface DrawElementImage {

@@ -29,7 +29,7 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
         <div className="layout">
             <div className="layout-content">
                 <Card className="banner-card" width={460} height={704} >
-                    <button onClick={OnPulbish}>Publicar</button>
+                    <button onClick={OnPulbish}>Gerar link</button>
                 </Card>
                 <Card width={previewSettings.width} height={previewSettings.height} className="banner-card" >
                     <div className="banner-preview banner-preview__desktop" onClick={OnClickImage}>

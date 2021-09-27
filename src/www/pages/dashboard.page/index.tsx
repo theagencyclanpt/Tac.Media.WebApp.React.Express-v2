@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import "./styles.scss";
 import { Canvas, DrawElement } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
+import { useLocation } from 'react-router';
 
 interface CanvasProps {
     Background: string;
@@ -79,7 +80,7 @@ export function DashboardPage(): JSX.Element {
             });
 
             const resultData = await result.json();
-            alert(resultData.result);
+            navigator.clipboard.writeText(window.location.origin + resultData.result)
         }
     }
 
