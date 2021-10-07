@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import "./styles.scss";
 import { Canvas, DrawElement } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
-import { useLocation } from 'react-router';
 
 interface CanvasProps {
     Background: string;
@@ -32,8 +31,6 @@ export function DashboardPage(): JSX.Element {
     const previewImgElement = (<img ref={previewImgRef} crossOrigin="anonymous" />);
     const [instagramSettings, setInstagramSettings] = useState<BannerConfiguration>();
     const [twitterSettings, setTwitterSettings] = useState<BannerConfiguration>();
-    let instagramImage: string = null;
-    let twitterImage: string = null;
 
     useEffect(() => {
         fetch("/api/banner/group/configuration/1", {
@@ -46,7 +43,6 @@ export function DashboardPage(): JSX.Element {
             .then(r => r.json())
             .then(data => {
                 const result = data.result;
-
 
                 setInstagramSettings(result.Instagram);
                 setTwitterSettings(result.Twitter);
@@ -63,7 +59,7 @@ export function DashboardPage(): JSX.Element {
             );
     }, []);
 
-    async function generateImageToPublish(): Promise<void> {
+    async function getPublishUrl(instagramImage: string, twitterImage: string): Promise<void> {
         if (instagramImage && twitterImage) {
             const result = await fetch("/api/banner/generate-url", {
                 method: "POST",
@@ -75,6 +71,10 @@ export function DashboardPage(): JSX.Element {
                     Group: {
                         InstagramImageBase64: instagramImage,
                         TwitterImageBase64: twitterImage
+                    },
+                    FormData: {
+                        //add form data here
+                        "Title": 123
                     }
                 })
             });
@@ -84,21 +84,18 @@ export function DashboardPage(): JSX.Element {
         }
     }
 
-    function onPulbish(): void {
+    function onPublish(): void {
         setCanvasProps({
             Background: instagramSettings.Background,
             Overlay: instagramSettings.Overlay,
             Font: instagramSettings.Font,
-            OnRender: (image: string) => {
-                instagramImage = image;
-                console.log("TEST", instagramImage);
+            OnRender: (instagramImage: string) => {
                 setCanvasProps({
                     Background: twitterSettings.Background,
                     Overlay: twitterSettings.Overlay,
                     Font: twitterSettings.Font,
-                    OnRender: async (image: string) => {
-                        twitterImage = image;
-                        await generateImageToPublish();
+                    OnRender: async (twitterImage: string) => {
+                        await getPublishUrl(instagramImage, twitterImage);
                     }
                 });
             }
@@ -140,7 +137,7 @@ export function DashboardPage(): JSX.Element {
                 DrawElements={drawElements}
             />}
             <DesktopLayout
-                OnPulbish={onPulbish}
+                OnPulbish={onPublish}
                 OnChangePreviewType={OnChangePreviewType}
                 PreviewType={previewType}
                 PreviewImgElement={previewImgElement}

@@ -38,13 +38,17 @@ export class BannerController extends BaseController {
     }
 
     @Post("/generate-url")
-    async GenerateBannerUrl(@RequestBody { Group }: GenerateBannerUrlRequest): Promise<string> {
+    async GenerateBannerUrl(@RequestBody { Group, FormData }: GenerateBannerUrlRequest): Promise<string> {
 
         if (Group) {
             const directoryName = u_v1();
             const directory = await this.Mkdir(directoryName);
             await this.SaveImageOnTempDirectory(directory, "instagram", Group.InstagramImageBase64);
             await this.SaveImageOnTempDirectory(directory, "twitter", Group.TwitterImageBase64);
+
+            if (FormData) {
+                await this.SaveDataOnTempDirectory(directory, JSON.stringify(FormData));
+            }
 
             return "/preview/" + directoryName;
         }
@@ -55,6 +59,18 @@ export class BannerController extends BaseController {
     private async SaveImageOnTempDirectory(directory, imageName: string, imageBase64: string): Promise<void> {
         return new Promise((resolve, reject) => {
             writeFile(p_join(directory, imageName + ".png"), imageBase64.replace(/^data:image\/png;base64,/, ""), 'base64', function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    private async SaveDataOnTempDirectory(directory, data: any): Promise<void> {
+        return new Promise((resolve, reject) => {
+            writeFile(p_join(directory, "data.json"), data, 'utf-8', function (err) {
                 if (err) {
                     reject(err);
                 } else {

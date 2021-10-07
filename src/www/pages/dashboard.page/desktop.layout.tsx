@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from "@/ui/components/card";
 import { PreviewType } from '.';
 
@@ -17,10 +17,6 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
         previewButtonTwitter: PreviewType === "twitter" ? "selected" : null
     };
 
-    function OnClickImage() {
-        alert("clickec");
-    }
-
     function OnChangePreview(previewType: PreviewType) {
         OnChangePreviewType(previewType);
     }
@@ -29,10 +25,15 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
         <div className="layout">
             <div className="layout-content">
                 <Card className="banner-card" width={460} height={704} >
+                    <select className="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                    </select>
                     <button onClick={OnPulbish}>Gerar link</button>
+                    <input type="text" name="" id="title" />
                 </Card>
                 <Card width={previewSettings.width} height={previewSettings.height} className="banner-card" >
-                    <div className="banner-preview banner-preview__desktop" onClick={OnClickImage}>
+                    <div className="banner-preview banner-preview__desktop" >
                         {PreviewImgElement}
                     </div>
                 </Card>

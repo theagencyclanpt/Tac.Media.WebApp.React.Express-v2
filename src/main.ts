@@ -1,4 +1,3 @@
-/* eslint-disable no-prototype-builtins */
 import path from 'path';
 import dotenv from "dotenv";
 import { Application } from "@/lib";
@@ -33,6 +32,7 @@ _application
   .useConfigurations(
     (provider) => provider
       .add("DIRECTORY_TEMP", directoryTemp)
+      .add("FILIPE", "OLA TESTE 123")
   )
   .useControllers(Object.values(Controllers))
   .addApplicationConfiguration(

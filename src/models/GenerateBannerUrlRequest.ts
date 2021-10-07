@@ -4,4 +4,5 @@ export interface GenerateBannerUrlRequest {
         InstagramImageBase64: string;
         TwitterImageBase64: string;
     };
+    FormData: { [key: string]: any }
 }

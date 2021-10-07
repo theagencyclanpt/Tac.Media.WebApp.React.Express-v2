@@ -13,7 +13,8 @@ export interface DrawElementText {
 
 export interface DrawElementImage {
     width: number,
-    height: number
+    height: number,
+    image: string,
 }
 
 export interface DrawElementShapeRect {
@@ -77,10 +78,6 @@ export function Canvas({ OnRender, BackgroundImage, DrawElements }: Props): JSX.
                     }
 
                 });
-                context.fillStyle = "#95191B";
-                context.fillRect(
-                    560, 850, 300, 50
-                );
             }
 
             OnRender(canvas.toDataURL());

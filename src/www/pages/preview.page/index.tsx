@@ -12,6 +12,7 @@ export function PreviewPage(): JSX.Element {
 
     return (
         <div className="layout">
+            <button>Edit</button>
             <Card width={979} height={704} className="banner-card" >
                 <div className="banner-preview banner-preview__desktop">
                     <img src={"/temp/banners/" + hash + "/twitter.png"} alt="" />
