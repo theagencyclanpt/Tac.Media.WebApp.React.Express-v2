@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200&display=swap');
+$main-font: 'Inter', sans-serif;
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-control {
+  font-family: $main-font;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 29px;
+  color: #424449;
+  width: 490px;
+  height: 50px;
+  background: #FFFFFF url('../../static/dropdownArrow.svg') no-repeat;
+  box-shadow: 0px 1.96238px 8.34012px rgba(0, 0, 0, 0.08);
+  border-radius: 1.47179px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-position: calc(100% - 0.5em) center;
+  margin-bottom: 20px;
+}
+
+select:last-of-type {
+  margin-bottom: 30px;
+}
+
+.form-group-1 {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.form-group-2 {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.input {
+  font-family: $main-font;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 29px;
+  color: #424449;
+  background: #FFFFFF;
+  box-shadow: 0px 1.96238px 8.34012px rgba(0, 0, 0, 0.08);
+  border-radius: 1.47179px;
+  margin-bottom: 20px;
+  align-self: flex-start;
+  margin-right: 16px;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+}
+
+.tournament-name {
+  width: 84%;
+  height: 50px;
+  padding-left: 13px;
+}
+
+.team-name {
+  width: 60%;
+  height: 50px;
+}
+
+.form-schedule {
+  width: 50px;
+  height: 50px;
+  background: #FFFFFF url('../../static/schedule.svg') no-repeat center;
+  box-shadow: 0px 1.96238px 8.34012px rgba(0, 0, 0, 0.08);
+  border-radius: 1.47179px;
+}
+
+.versus {
+  width: 150.61px;
+  height: 152.58px;
+  background: #FFFFFF;
+  box-shadow: 0px 1.96238px 8.34012px rgba(0, 0, 0, 0.08);
+  border-radius: 1.47179px;
+}

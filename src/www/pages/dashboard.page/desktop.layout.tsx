@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card } from "@/ui/components/card";
+import CardForm from "../../components/card.form/index"; //TODO
 import { PreviewType } from '.';
 
 interface DesktopLayoutProps {
@@ -25,10 +26,7 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
         <div className="layout">
             <div className="layout-content">
                 <Card className="banner-card" width={460} height={704} >
-                    <select className="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                    </select>
+                    <CardForm />
                     <button onClick={OnPulbish}>Gerar link</button>
                     <input type="text" name="" id="title" />
                 </Card>
