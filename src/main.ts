@@ -29,7 +29,6 @@ fs_access(directoryTemp, function (error) {
 const _application = new Application();
 
 _application
-  .useErrorHandler()
   .useConfigurations(
     provider => provider.add("DIRECTORY_TEMP", directoryTemp),
     provider => provider.add("SUPER_ADMIN", new UserConfig("admin", "password"))
@@ -58,4 +57,5 @@ _application
       }
     }
   )
+  .useErrorHandler()
   .listen(PORT);
