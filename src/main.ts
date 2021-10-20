@@ -30,10 +30,9 @@ const _application = new Application();
 _application
   .useErrorHandler()
   .useConfigurations(
-    (provider) => provider
-      .add("DIRECTORY_TEMP", directoryTemp)
-      .add("FILIPE", "OLA TESTE 123")
+    provider => provider.add("DIRECTORY_TEMP", directoryTemp)
   )
+  .useJWTAuthentication("JWT_TOKEN_SUPER_SECRET", "2h")
   .useControllers(Object.values(Controllers))
   .addApplicationConfiguration(
     (provider) => {

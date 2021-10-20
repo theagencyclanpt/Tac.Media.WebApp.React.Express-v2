@@ -112,12 +112,11 @@ export abstract class BaseController {
     private ApplyMiddleware(method: any): any[] {
         const middleware: any[] = [];
 
-
         if (this.AuthorizedMethods) {
             const auth = this.AuthorizedMethods.find(value => value == method.name);
 
             if (auth) {
-                middleware.push(AuthorizeHandler);
+                middleware.push((request, response, next) => AuthorizeHandler(request, response, next, this["__aplication__configurations"]));
             }
         }
 
