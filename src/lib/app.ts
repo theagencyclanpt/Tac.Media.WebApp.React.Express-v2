@@ -1,16 +1,14 @@
 import express, { Application as express_Application } from "express";
-import { LogicError } from ".";
+import { IAuthenticationConfig, LogicError } from ".";
 import { Configurations } from "./configurations";
 import { ErrorHandler } from "./handlers/error.handler";
 
 type addApplicationConfigurationArgment = (app: express_Application) => void;
 type useConfigurationsArguments = (configProvider: Configurations) => void;
-type AuthenticationType = "JWT";
 
 export class Application {
     private _express: express_Application = null;
     private _configurations: Configurations = null;
-    private _authenticationType?: AuthenticationType = null;
 
     constructor() {
         this._express = express();
@@ -45,9 +43,6 @@ export class Application {
     }
 
     useJWTAuthentication(jwtSecret: string, expiresIn?: string): this {
-        if (this._authenticationType) {
-            throw new LogicError("The app all ready have a authentication method. " + this._authenticationType)
-        }
 
         if (!jwtSecret) {
             throw new LogicError("JWT Secret must be defined.");
@@ -57,12 +52,34 @@ export class Application {
             expiresIn = "1h"
         }
 
-        this._authenticationType = "JWT";
+        const authConfigKey = "AUTH_CONFIG";
+        let authConfig: IAuthenticationConfig = null;
+        try {
+            authConfig = this._configurations.get(authConfigKey);
+        } catch (error) {
+            console.log("Any auth config.");
+        }
+
+        if (authConfig) {
+
+            if (authConfig.AuthenticationType) {
+                throw new LogicError("The app all ready have a authentication method. " + authConfig.AuthenticationType)
+            }
+
+            this._configurations.removeByKey(authConfigKey);
+            authConfig.JWTExpiresIn = expiresIn;
+            authConfig.JWTSecret = jwtSecret;
+            authConfig.AuthenticationType = "JWT";
+        } else {
+            authConfig = {
+                JWTExpiresIn: expiresIn,
+                JWTSecret: jwtSecret,
+                AuthenticationType: "JWT"
+            }
+        }
 
         this.useConfigurations(
-            config => config.add("JWT_SECRET", jwtSecret),
-            config => config.add("JWT_EXPIRES_IN", expiresIn),
-            config => config.add("AUTH_TYPE", this._authenticationType),
+            config => config.add(authConfigKey, authConfig),
         );
 
         return this;

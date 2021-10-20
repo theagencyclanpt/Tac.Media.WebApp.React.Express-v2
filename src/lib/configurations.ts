@@ -20,4 +20,9 @@ export class Configurations {
 
         return this;
     }
+
+    public removeByKey(key: string): this {
+        delete this._registry[key]
+        return this;
+    }
 }

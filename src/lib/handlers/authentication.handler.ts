@@ -1,12 +1,14 @@
 import { Response, Request, NextFunction } from "express";
-import { LogicError, UnauthorizedError } from '@/lib/entities';
+import { IAuthenticationConfig, LogicError, UnauthorizedError } from '@/lib/entities';
 import { BaseController } from "../base.controller";
 import JWT from "jsonwebtoken";
 
 export function AuthorizeHandler(request: Request, response: Response, next: NextFunction, context: BaseController) {
-    switch (context.getConfigurations().get("AUTH_TYPE")) {
+    const authenticationConfig = context.getConfigurations().get("AUTH_CONFIG") as IAuthenticationConfig;
+
+    switch (authenticationConfig.AuthenticationType) {
         case "JWT":
-            JWTHandler(request, next, context);
+            JWTHandler(request, next, context, authenticationConfig);
             break;
 
         default:
@@ -14,13 +16,13 @@ export function AuthorizeHandler(request: Request, response: Response, next: Nex
     }
 }
 
-function JWTHandler(request: Request, next: NextFunction, context: BaseController) {
+function JWTHandler(request: Request, next: NextFunction, context: BaseController, authenticationConfig: IAuthenticationConfig) {
     const token = request.headers['x-access-token'];
     if (!token) {
         throw new UnauthorizedError("Unauthorized");
     }
 
-    JWT.verify(token, context.getConfigurations().get("JWT_SECRET"), function (err, decoded) {
+    JWT.verify(token, authenticationConfig.JWTSecret, function (err, decoded) {
         if (err) {
             throw new UnauthorizedError("Unauthorized");
         }

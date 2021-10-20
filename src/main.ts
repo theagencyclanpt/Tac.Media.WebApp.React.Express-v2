@@ -30,7 +30,11 @@ const _application = new Application();
 _application
   .useErrorHandler()
   .useConfigurations(
-    provider => provider.add("DIRECTORY_TEMP", directoryTemp)
+    provider => provider.add("DIRECTORY_TEMP", directoryTemp),
+    provider => provider.add("SUPER_ADMIN", {
+      AdminPassword: "123",
+      AdminUsername: "agency"
+    })
   )
   .useJWTAuthentication("JWT_TOKEN_SUPER_SECRET", "2h")
   .useControllers(Object.values(Controllers))
