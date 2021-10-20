@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Router, Application, Request, Response } from "express";
-import { AuthorizeHandler } from "@/lib";
+import { AuthorizeHandler, UserRequest } from "@/lib";
 
 type HttpVerb = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -14,14 +14,16 @@ export interface IRouter {
     Callback: any
 }
 
-export type RouterArgumentType = "BODY" | "QUERY" | "PARAMS";
+export type MethodArgumentType = "BODY" | "QUERY" | "PARAMS" | "USER";
 export interface IRouterArguments {
     MethodName: string,
-    Type: RouterArgumentType,
+    Type: MethodArgumentType,
     Index: number
 }
 
+
 export abstract class BaseController {
+    public User: UserRequest;
     public BasePath: string;
     public Routes: IRouter[];
     public AuthorizedMethods: string[];
@@ -88,6 +90,10 @@ export abstract class BaseController {
                             dependencyInjectionArguments.push(request.params);
                             break;
 
+                        case "USER":
+                            dependencyInjectionArguments.push(this.User);
+                            break;
+
                         default:
                             throw new Error("No supported type.");
                     }
@@ -116,7 +122,7 @@ export abstract class BaseController {
             const auth = this.AuthorizedMethods.find(value => value == method.name);
 
             if (auth) {
-                middleware.push((request, response, next) => AuthorizeHandler(request, response, next, this["__aplication__configurations"]));
+                middleware.push((request, response, next) => AuthorizeHandler(request, response, next, this["__aplication__configurations"], this));
             }
         }
 
