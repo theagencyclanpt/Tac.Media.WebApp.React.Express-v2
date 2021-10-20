@@ -4,6 +4,8 @@ import JWT from "jsonwebtoken";
 import { SigninRequest } from "@/model/SigninRequest";
 import { IAuthenticationConfig, LogicError } from "@/lib/entities";
 import { UserConfig } from "@/models";
+import Bcrypt from "bcrypt";
+
 @Controller("/auth")
 export class AuthController extends BaseController {
 
@@ -14,9 +16,14 @@ export class AuthController extends BaseController {
   private _superUser: UserConfig;
 
   @Post("/signin")
-  Signin(@RequestBody { Username, Password }: SigninRequest): string {
-
+  async Signin(@RequestBody { Username, Password }: SigninRequest): Promise<string> {
     if (Username !== this._superUser.Username) {
+      throw new LogicError("Invalid credentials.");
+    }
+
+    const isValidPassword = await this.ComparaHashs(Password, this._superUser.Password);
+
+    if (!isValidPassword) {
       throw new LogicError("Invalid credentials.");
     }
 
@@ -24,5 +31,16 @@ export class AuthController extends BaseController {
       expiresIn: this._authConfig.JWTExpiresIn
     });
     return token;
+  }
+
+  private ComparaHashs(firstHash, secondHash): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      Bcrypt.compare(firstHash, secondHash, function (err, result) {
+        if (err) {
+          reject(err);
+        }
+        resolve(!!result);
+      });
+    });
   }
 }

@@ -31,7 +31,9 @@ const _application = new Application();
 _application
   .useConfigurations(
     provider => provider.add("DIRECTORY_TEMP", directoryTemp),
-    provider => provider.add("SUPER_ADMIN", new UserConfig("admin", "password"))
+    provider => provider.add("SUPER_ADMIN", new UserConfig(
+      "admin",
+      "$2b$10$9HzuhWHFPWZoiHOl/yJqIejgGbRaU.ceNzHOLZh6XfJ54ejSujxyy"))
   )
   .useJWTAuthentication("JWT_TOKEN_SUPER_SECRET", "2h")
   .useControllers(Object.values(Controllers))
