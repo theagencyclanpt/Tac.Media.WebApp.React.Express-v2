@@ -23,8 +23,8 @@ export class BannerController extends BaseController {
 
     @Get("/configurations")
     @Authorize()
-    GetBannerConfigurations(@RequestUser user: UserRequest): BannerConfiguration[] {
-        console.log(user);
+    GetBannerConfigurations(): BannerConfiguration[] {
+        console.log(this.User);
         return IndividualConfigurations;
     }
 

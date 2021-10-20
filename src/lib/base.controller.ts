@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Router, Application, Request, Response } from "express";
-import { AuthorizeHandler, UserRequest } from "@/lib";
+import { AuthorizeHandler, Configurations, UserRequest } from "@/lib";
 
 type HttpVerb = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -21,8 +21,8 @@ export interface IRouterArguments {
     Index: number
 }
 
-
 export abstract class BaseController {
+    private __aplication__configurations: Configurations;
     public User: UserRequest;
     public BasePath: string;
     public Routes: IRouter[];
@@ -66,6 +66,10 @@ export abstract class BaseController {
         });
 
         app.use("/api" + this.BasePath, _router);
+    }
+
+    public getConfigurations(): Configurations {
+        return this.__aplication__configurations;
     }
 
     private async MethodHandler(router: IRouter, request: Request, response: Response, next) {
@@ -122,7 +126,7 @@ export abstract class BaseController {
             const auth = this.AuthorizedMethods.find(value => value == method.name);
 
             if (auth) {
-                middleware.push((request, response, next) => AuthorizeHandler(request, response, next, this["__aplication__configurations"], this));
+                middleware.push((request, response, next) => AuthorizeHandler(request, response, next, this));
             }
         }
 
