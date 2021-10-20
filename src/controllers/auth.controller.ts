@@ -13,7 +13,7 @@ export class AuthController extends BaseController {
 
   @Post("/signin")
   GetGroupBannerConfiguration(): string {
-    const token = JWT.sign({ userId: 1 }, this._jwtSecret, {
+    const token = JWT.sign({ userId: Date.now() }, this._jwtSecret, {
       expiresIn: this._jwtExpiresIn
     });
     return token;

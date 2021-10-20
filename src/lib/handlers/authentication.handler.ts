@@ -18,7 +18,6 @@ export function AuthorizeHandler(request: Request, response: Response, next: Nex
 function JWTHandler(request: Request, next: NextFunction, configurations: Configurations, context: BaseController) {
     const token = request.headers['x-access-token'];
     if (!token) {
-        console.log(configurations);
         throw new UnauthorizedError("Unauthorized");
     }
 
