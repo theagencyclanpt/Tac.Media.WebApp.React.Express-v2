@@ -4,6 +4,7 @@ import { Application } from "@/lib";
 import * as Controllers from "./controllers";
 import Cors from "cors";
 import { access as fs_access, mkdir as fs_mkdir } from "fs";
+import { UserConfig } from "@/models";
 
 dotenv.config();
 
@@ -31,10 +32,7 @@ _application
   .useErrorHandler()
   .useConfigurations(
     provider => provider.add("DIRECTORY_TEMP", directoryTemp),
-    provider => provider.add("SUPER_ADMIN", {
-      AdminPassword: "123",
-      AdminUsername: "agency"
-    })
+    provider => provider.add("SUPER_ADMIN", new UserConfig("admin", "password"))
   )
   .useJWTAuthentication("JWT_TOKEN_SUPER_SECRET", "2h")
   .useControllers(Object.values(Controllers))

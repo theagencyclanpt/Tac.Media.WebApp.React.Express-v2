@@ -20,6 +20,9 @@
       "@/model/*": [
         "./src/models/*"
       ],
+      "@/models": [
+        "./src/models"
+      ],
       "@/database/*": [
         "./src/database/*"
       ],

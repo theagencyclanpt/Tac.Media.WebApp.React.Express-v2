@@ -3,12 +3,15 @@ import { Controller, InjectConfiguration, Post, RequestBody } from "@/lib/decora
 import JWT from "jsonwebtoken";
 import { SigninRequest } from "@/model/SigninRequest";
 import { IAuthenticationConfig } from "@/lib/entities";
-
+import { UserConfig } from "@/models";
 @Controller("/auth")
 export class AuthController extends BaseController {
 
   @InjectConfiguration("AUTH_CONFIG")
   private _authConfig: IAuthenticationConfig;
+
+  @InjectConfiguration("SUPER_ADMIN")
+  private _superUser: UserConfig;
 
   @Post("/signin")
   Signin(@RequestBody { Username, Password }: SigninRequest): string {
