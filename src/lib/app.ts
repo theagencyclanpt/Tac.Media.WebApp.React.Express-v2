@@ -1,4 +1,5 @@
 import express, { Application as express_Application } from "express";
+import { IAuthenticationConfig, LogicError } from ".";
 import { Configurations } from "./configurations";
 import { ErrorHandler } from "./handlers/error.handler";
 
@@ -37,6 +38,49 @@ export class Application {
         configs.forEach(config => {
             config(this._configurations);
         });
+
+        return this;
+    }
+
+    useJWTAuthentication(jwtSecret: string, expiresIn?: string): this {
+
+        if (!jwtSecret) {
+            throw new LogicError("JWT Secret must be defined.");
+        }
+
+        if (expiresIn) {
+            expiresIn = "1h"
+        }
+
+        const authConfigKey = "AUTH_CONFIG";
+        let authConfig: IAuthenticationConfig = null;
+        try {
+            authConfig = this._configurations.get(authConfigKey);
+        } catch (error) {
+            console.log("Any auth config.");
+        }
+
+        if (authConfig) {
+
+            if (authConfig.AuthenticationType) {
+                throw new LogicError("The app all ready have a authentication method. " + authConfig.AuthenticationType)
+            }
+
+            this._configurations.removeByKey(authConfigKey);
+            authConfig.JWTExpiresIn = expiresIn;
+            authConfig.JWTSecret = jwtSecret;
+            authConfig.AuthenticationType = "JWT";
+        } else {
+            authConfig = {
+                JWTExpiresIn: expiresIn,
+                JWTSecret: jwtSecret,
+                AuthenticationType: "JWT"
+            }
+        }
+
+        this.useConfigurations(
+            config => config.add(authConfigKey, authConfig),
+        );
 
         return this;
     }

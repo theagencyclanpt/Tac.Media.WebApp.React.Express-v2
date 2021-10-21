@@ -1,4 +1,4 @@
-import { BaseController, RouterArgumentType } from "@/lib";
+import { BaseController, MethodArgumentType } from "@/lib";
 
 function ValidateRoute(route: string) {
     if (!route.startsWith("/")) {
@@ -79,7 +79,11 @@ export function RequestParams(target: BaseController, propertyKey: string, param
     AddArgumentInjection("PARAMS", target, propertyKey, parameterIndex);
 }
 
-function AddArgumentInjection(type: RouterArgumentType, target: BaseController, propertyKey: string, parameterIndex: number) {
+export function RequestUser(target: BaseController, propertyKey: string, parameterIndex: number) {
+    AddArgumentInjection("USER", target, propertyKey, parameterIndex);
+}
+
+function AddArgumentInjection(type: MethodArgumentType, target: BaseController, propertyKey: string, parameterIndex: number) {
     if (!target.RouterArgumentInjection) {
         target.RouterArgumentInjection = [];
     }

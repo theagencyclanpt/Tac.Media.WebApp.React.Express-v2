@@ -1,6 +1,6 @@
 import { BaseController } from "@/lib/base.controller";
-import { Controller, Get, Post, RequestBody, RequestQuery, InjectConfiguration, RequestParams } from "@/lib/decorators";
-import { LogicError } from "@/lib/entities";
+import { Controller, Get, Post, RequestBody, RequestQuery, InjectConfiguration, RequestParams, Authorize, RequestUser } from "@/lib/decorators";
+import { LogicError, UserRequest } from "@/lib/entities";
 import { BannerConfiguration } from "@/model/BannerConfiguration";
 import { GetBannerConfigurationByIdRequest } from "@/model/GetBannerConfigurationByIdRequest";
 import { GenerateBannerUrlRequest } from "@/model/GenerateBannerUrlRequest";
@@ -22,7 +22,9 @@ export class BannerController extends BaseController {
     }
 
     @Get("/configurations")
+    @Authorize()
     GetBannerConfigurations(): BannerConfiguration[] {
+        console.log(this.User);
         return IndividualConfigurations;
     }
 

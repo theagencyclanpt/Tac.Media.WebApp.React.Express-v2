@@ -4,6 +4,7 @@ import { Application } from "@/lib";
 import * as Controllers from "./controllers";
 import Cors from "cors";
 import { access as fs_access, mkdir as fs_mkdir } from "fs";
+import { UserConfig } from "@/models";
 
 dotenv.config();
 
@@ -28,12 +29,13 @@ fs_access(directoryTemp, function (error) {
 const _application = new Application();
 
 _application
-  .useErrorHandler()
   .useConfigurations(
-    (provider) => provider
-      .add("DIRECTORY_TEMP", directoryTemp)
-      .add("FILIPE", "OLA TESTE 123")
+    provider => provider.add("DIRECTORY_TEMP", directoryTemp),
+    provider => provider.add("SUPER_ADMIN", new UserConfig(
+      "admin",
+      "$2b$10$9HzuhWHFPWZoiHOl/yJqIejgGbRaU.ceNzHOLZh6XfJ54ejSujxyy"))
   )
+  .useJWTAuthentication("JWT_TOKEN_SUPER_SECRET", "2h")
   .useControllers(Object.values(Controllers))
   .addApplicationConfiguration(
     (provider) => {
@@ -57,4 +59,5 @@ _application
       }
     }
   )
+  .useErrorHandler()
   .listen(PORT);

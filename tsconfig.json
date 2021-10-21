@@ -20,6 +20,9 @@
       "@/model/*": [
         "./src/models/*"
       ],
+      "@/models": [
+        "./src/models"
+      ],
       "@/database/*": [
         "./src/database/*"
       ],
@@ -28,6 +31,21 @@
       ],
       "@/ui/hooks/*": [
         "src/www/hooks/*"
+      ],
+      "@/ui/hooks": [
+        "src/www/hooks"
+      ],
+      "@/ui/interfaces/*": [
+        "src/www/interfaces/*"
+      ],
+      "@/ui/interfaces": [
+        "src/www/interfaces"
+      ],
+      "@/ui/client": [
+        "src/www/client"
+      ],
+      "@/ui/client/models": [
+        "src/www/client/models"
       ]
     }
   },

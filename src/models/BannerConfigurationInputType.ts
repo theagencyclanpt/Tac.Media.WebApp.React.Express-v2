@@ -1,1 +1,1 @@
-type BannerConfigurationInputType = "Text" | "Hour" | "Image";
+export type BannerConfigurationInputType = "Text" | "Hour" | "Image";
