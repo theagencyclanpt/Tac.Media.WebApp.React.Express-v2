@@ -18,7 +18,7 @@ export function GenerateRoutes({ RedirectRoute }: GenerateRoutesProps): JSX.Elem
     routes.push(
       (<Route path={page.route} exact key={index} component={() => {
         const auth = useAuthentication();
-        if (page.isProtected && !auth.UserId) {
+        if (page.isProtected && !auth.Token) {
           return <Redirect to={{ pathname: RedirectRoute }} />;
         } else {
           return page.component;

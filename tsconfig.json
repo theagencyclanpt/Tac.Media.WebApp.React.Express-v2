@@ -40,6 +40,12 @@
       ],
       "@/ui/interfaces": [
         "src/www/interfaces"
+      ],
+      "@/ui/client": [
+        "src/www/client"
+      ],
+      "@/ui/client/models": [
+        "src/www/client/models"
       ]
     }
   },

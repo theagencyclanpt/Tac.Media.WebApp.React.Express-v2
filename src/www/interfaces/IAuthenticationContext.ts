@@ -1,3 +1,3 @@
 export interface IAuthenticationContext {
-  UserId?: number;
+  Token?: string;
 }
