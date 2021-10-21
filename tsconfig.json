@@ -31,6 +31,15 @@
       ],
       "@/ui/hooks/*": [
         "src/www/hooks/*"
+      ],
+      "@/ui/hooks": [
+        "src/www/hooks"
+      ],
+      "@/ui/interfaces/*": [
+        "src/www/interfaces/*"
+      ],
+      "@/ui/interfaces": [
+        "src/www/interfaces"
       ]
     }
   },
