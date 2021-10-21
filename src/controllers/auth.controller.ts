@@ -21,7 +21,7 @@ export class AuthController extends BaseController {
       throw new LogicError("Invalid credentials.");
     }
 
-    const isValidPassword = await this.ComparaHashs(Password, this._superUser.Password);
+    const isValidPassword = await this.CompareHashs(Password, this._superUser.Password);
 
     if (!isValidPassword) {
       throw new LogicError("Invalid credentials.");
@@ -33,7 +33,7 @@ export class AuthController extends BaseController {
     return token;
   }
 
-  private ComparaHashs(firstHash, secondHash): Promise<boolean> {
+  private CompareHashs(firstHash, secondHash): Promise<boolean> {
     return new Promise((resolve, reject) => {
       Bcrypt.compare(firstHash, secondHash, function (err, result) {
         if (err) {
