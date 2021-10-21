@@ -1,7 +1,7 @@
 import React from 'react';
 import { IAuthenticationContext } from "@/ui/interfaces";
 
-const AuthenticationContext = React.createContext<IAuthenticationContext>({});
+const AuthenticationContext = React.createContext<IAuthenticationContext>({} as IAuthenticationContext);
 
 export const AuthenticationProvider = AuthenticationContext.Provider;
 

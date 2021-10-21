@@ -9,8 +9,7 @@ export function LoginPage(): JSX.Element {
 
   async function onLogin() {
     const result = await apiClient.Authentication.Signin(new SigninRequest("admin", "teste123"));
-
-    auth.Token = result.Token;
+    auth.SetToken(result.Token);
   }
 
   return (

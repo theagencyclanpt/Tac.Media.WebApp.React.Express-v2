@@ -1,6 +1,7 @@
 import axios, { Axios } from "axios";
 import { AuthenticationApiClient } from "./authentication.api.client";
 
+//TODO: create error handler for client side
 export class ApiClient {
   private _axios: Axios;
 
