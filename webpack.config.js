@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const tailwindcss = require('tailwindcss');
+const autoprefixer = require('autoprefixer');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const basePath = path.resolve(__dirname);
 const dotenv = require('dotenv');
@@ -25,12 +28,29 @@ module.exports = {
                 use: 'babel-loader'
             },
             {
-                test: /\.s?css$/,
-                use: ['style-loader', 'css-loader', 'sass-loader']
-            }
+                test: /\.(css|scss|sass)$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader',
+                    {
+                        loader: 'postcss-loader', // postcss loader needed for tailwindcss
+                        options: {
+                            postcssOptions: {
+                                ident: 'postcss',
+                                plugins: [tailwindcss, autoprefixer],
+                            },
+                        },
+                    },
+                ],
+            },
         ]
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: "styles.css",
+            chunkFilename: "styles.css"
+        }),
         new HtmlWebpackPlugin({
             template: path.resolve(basePath, 'src/www/static/index.html'),
             favicon: path.resolve(basePath, 'src/www/static/favicon.ico'),
