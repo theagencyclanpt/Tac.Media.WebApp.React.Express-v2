@@ -9,8 +9,8 @@ function getStorageValue(key: string, defaultValue: any) {
   return initial || defaultValue;
 }
 
-export const useLocalStorage = (key: string, defaultValue: any) => {
-  const [value, setValue] = useState(() => {
+export function useLocalStorage<T>(key: string, defaultValue: any) {
+  const [value, setValue] = useState<T>(() => {
     return getStorageValue(key, defaultValue);
   });
 
