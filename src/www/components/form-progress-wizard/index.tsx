@@ -72,7 +72,6 @@ export function FormProgressWizard({ Id, Steps }: FormProgressWizardProps): JSX.
 
   return (
     <div>
-      <h1>FORM WIZARD</h1>
       {Steps[stepIndex]({ useStepActions })}
       <button onClick={onPreviusStep}>Previus</button>
       <button onClick={onNextStep}>Next</button>

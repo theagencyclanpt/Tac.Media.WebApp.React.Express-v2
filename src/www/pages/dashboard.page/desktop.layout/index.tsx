@@ -3,6 +3,7 @@ import { Card } from "@/ui/components/card";
 import { PreviewType } from '..';
 import { FormProgressWizard } from "@/ui/components/form-progress-wizard";
 import { Steps } from "./form";
+const ArrowSvg = require("../../../static/arrow.svg") as string;
 
 interface DesktopLayoutProps {
   OnPulbish: () => void,
@@ -27,13 +28,18 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
     <div className="layout">
       <div className="layout-content">
         <Card className="banner-card" width={460} height={704} >
-          <select className="form-control" id="exampleFormControlSelect1">
+          <span className="absolute w-content-width h-btn-height shadow-step-title-shadow pt-btn-margin-bot pl-step-title-padding-left rounded-step-title-radius bg-btn-bg">Tipo:  </span>
+          {/* <select className="form-control" id="exampleFormControlSelect1">
             <option>1</option>
             <option>2</option>
           </select>
           <button onClick={OnPulbish}>Gerar link</button>
-          <input type="text" name="" id="title" />
+          <input type="text" name="" id="title" /> */}
           <FormProgressWizard Id={"Form"} Steps={Steps} />
+          <div className="flex flex-row justify-center items-center w-content-width h-btn-height shadow-step-title-shadow rounded-step-footer-radius bg-btn-bg">
+            <img src={ArrowSvg} alt="" />
+            1/3
+          </div>
         </Card>
         <Card width={previewSettings.width} height={previewSettings.height} className="banner-card" >
           <div className="banner-preview banner-preview__desktop" >
