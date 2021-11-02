@@ -3,7 +3,7 @@ import { Card } from "@/ui/components/card";
 import { PreviewType } from '..';
 import { FormProgressWizard } from "@/ui/components/form-progress-wizard";
 import { Steps } from "./form";
-const ArrowSvg = require("../../../static/arrow.svg") as string;
+// const ArrowSvg = require("../../../static/arrow.svg") as string;
 
 interface DesktopLayoutProps {
   OnPulbish: () => void,
@@ -37,7 +37,7 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
           <input type="text" name="" id="title" /> */}
           <FormProgressWizard Id={"Form"} Steps={Steps} />
           <div className="flex flex-row justify-center items-center w-content-width h-btn-height shadow-step-title-shadow rounded-step-footer-radius bg-btn-bg">
-            <img src={ArrowSvg} alt="" />
+            <img src={"/resources/icons/arrow.svg"} alt="" />
             1/3
           </div>
         </Card>
