@@ -6,9 +6,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@200&display=swap');
+
 html, body, #main, #app{
     height: 100%;
     width: 100%;
+    font-family: 'Sora', sans-serif;
 }
 
 html, body, div, span, applet, object, iframe,

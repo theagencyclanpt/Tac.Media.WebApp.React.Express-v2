@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
-
 .layout{
     height: 100%;
     width: 100%;
@@ -15,18 +13,15 @@
         justify-content: center;
         flex-wrap: wrap;
         flex-direction: row;
-        background-color: #E8E8E9;
+        background-color: #ffffff;
         padding: 15px;
     }
 }
 
 .banner {
     &-card{
-       margin: 0 !important;
-       margin-right: 24px !important;
        margin: 24px;
-       background-color: #F4F4F4 !important;
-       border: none !important;
+       background-color: #F4F4F4;
        box-shadow: 0px 4px 17px rgba(0, 0, 0, 0.048);
     }
 
@@ -53,39 +48,50 @@
 
 .preview-options{
     display: flex;
-    width: 65px;
-    height: 704;
+    width: 160px;
+    height: 100%;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
+    background-color: #ffffff;
 
     .preview-option{
-       margin: 0 !important;
-       margin-right: 24px !important;
-       margin: 24px;
-       margin-bottom: 15px !important;
-       background-color: #F4F4F4 !important;
-       border: none !important;
-       box-shadow: 0px 4px 17px rgba(0, 0, 0, 0.048); 
+        margin-bottom: 15px ;
+        background-color: #F4F4F4 ;
+        stroke: #24292E;
+        border: none ;
+        box-shadow: 0px 4px 17px rgba(0, 0, 0, 0.048); 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 ;
 
-       .card-body{
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           flex-direction: column;
-           padding: 0 !important;
-       }
+        & > {
+            color:#2c3e50;
+        }
 
        &:hover {
-           background-color: red !important;
+            stroke: #ffffff;
+           background-color: rgb(0, 126, 63) ;
+           box-shadow: rgb(0 126 65 / 24%) 0px 8px 16px 0px;
        }
 
        &.selected {
-           background-color: aquamarine !important;
+           background-color: rgb(0, 171, 85) ;
+           box-shadow: rgb(0 171 85 / 24%) 0px 8px 16px 0px;
+           stroke: #ffffff;
        }
     }
 }
 
-.bg-btn-bg {
-    font-family: 'Inter', sans-serif;
+.banner-configuration-side__bar{
+    background-color: white;
+    height: 100%;
+    width: 380px;
+    border-right: 1px solid #e5e8eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

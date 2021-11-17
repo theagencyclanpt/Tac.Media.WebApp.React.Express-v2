@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "./styles.scss";
-import { Canvas, DrawElement } from "@/ui/components/canvas";
+import { Canvas, DrawElement, DrawElementText } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
 
 interface CanvasProps {
@@ -12,25 +12,20 @@ interface CanvasProps {
 
 export type PreviewType = "instagram" | "twitter";
 
-type BannerConfigurationType = "instagram" | "twitter";
-
 interface BannerConfiguration {
-    Id: number;
-    Type: BannerConfigurationType;
-    Description: string;
-    Background: string;
-    Overlay: string;
-    Font: string;
+    BackgroundImage: string;
+    Fields: DrawElement[]
 }
 
 export function DashboardPage(): JSX.Element {
     const [previewType, setPreviewType] = useState<PreviewType>("instagram")
     const [drawElements, setDrawElements] = useState<DrawElement[]>([] as DrawElement[]);
     const [canvasProps, setCanvasProps] = useState<CanvasProps>();
-    const previewImgRef = useRef(null);
-    const previewImgElement = (<img ref={previewImgRef} crossOrigin="anonymous" />);
     const [instagramSettings, setInstagramSettings] = useState<BannerConfiguration>();
     const [twitterSettings, setTwitterSettings] = useState<BannerConfiguration>();
+
+    const previewImgRef = useRef(null);
+    const previewImgElement = (<img ref={previewImgRef} crossOrigin="anonymous" />);
 
     useEffect(() => {
         fetch("/api/banner/group/configuration/1", {
@@ -50,8 +45,8 @@ export function DashboardPage(): JSX.Element {
                 setPreviewType("instagram");
 
                 setCanvasProps({
-                    Background: result.Instagram.Background,
-                    Overlay: result.Instagram.Overlay,
+                    Background: result.Instagram.BackgroundImage,
+                    Overlay: null,
                     Font: result.Instagram.Font,
                     OnRender: onRender
                 });
@@ -85,21 +80,21 @@ export function DashboardPage(): JSX.Element {
     }
 
     function onPublish(): void {
-        setCanvasProps({
-            Background: instagramSettings.Background,
-            Overlay: instagramSettings.Overlay,
-            Font: instagramSettings.Font,
-            OnRender: (instagramImage: string) => {
-                setCanvasProps({
-                    Background: twitterSettings.Background,
-                    Overlay: twitterSettings.Overlay,
-                    Font: twitterSettings.Font,
-                    OnRender: async (twitterImage: string) => {
-                        await getPublishUrl(instagramImage, twitterImage);
-                    }
-                });
-            }
-        });
+        // setCanvasProps({
+        //     Background: instagramSettings.Background,
+        //     Overlay: instagramSettings.Overlay,
+        //     Font: instagramSettings.Font,
+        //     OnRender: (instagramImage: string) => {
+        //         setCanvasProps({
+        //             Background: twitterSettings.Background,
+        //             Overlay: twitterSettings.Overlay,
+        //             Font: twitterSettings.Font,
+        //             OnRender: async (twitterImage: string) => {
+        //                 await getPublishUrl(instagramImage, twitterImage);
+        //             }
+        //         });
+        //     }
+        // });
     }
 
     function onRender(image: string) {
@@ -114,19 +109,33 @@ export function DashboardPage(): JSX.Element {
 
         if (previewType === "instagram") {
             setCanvasProps({
-                Background: instagramSettings.Background,
-                Overlay: instagramSettings.Overlay,
-                Font: instagramSettings.Font,
+                Background: instagramSettings.BackgroundImage,
+                Font: null,
                 OnRender: customRender
             });
         } else if (previewType === "twitter") {
             setCanvasProps({
-                Background: twitterSettings.Background,
-                Overlay: twitterSettings.Overlay,
-                Font: twitterSettings.Font,
+                Background: twitterSettings.BackgroundImage,
+                Font: null,
                 OnRender: customRender
             });
         }
+    }
+
+    function OnFormChange(value: any, id: string) {
+        const config = instagramSettings.Fields.find(e => e.Id === id);
+
+        switch (config.Type) {
+            case "text":
+                (config.Extra as DrawElementText).Value = value;
+                break;
+
+            default:
+                break;
+        }
+
+
+        setDrawElements([config]);
     }
 
     return (
@@ -141,6 +150,7 @@ export function DashboardPage(): JSX.Element {
                 OnChangePreviewType={OnChangePreviewType}
                 PreviewType={previewType}
                 PreviewImgElement={previewImgElement}
+                OnFormChange={OnFormChange}
             />
         </>
     );

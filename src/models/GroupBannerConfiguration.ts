@@ -1,8 +1,14 @@
-import { BannerConfiguration } from "./BannerConfiguration";
+export interface ConfigurationSocialMediaField {
+    Id: string
+}
+
+export interface ConfigurationSocialMedia {
+    BackgroundImage: string;
+    Fields: ConfigurationSocialMediaField[]
+}
 
 export interface GroupBannerConfiguration {
     Id: number;
-    Description: string;
-    Instagram: BannerConfiguration;
-    Twitter: BannerConfiguration;
+    Instagram: ConfigurationSocialMedia;
+    Twitter: ConfigurationSocialMedia;
 }

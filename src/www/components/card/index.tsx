@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 interface CardProps {
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     className?: string;
     onClick?: () => void | undefined,
     children?: React.ReactNode;
@@ -11,8 +11,8 @@ interface CardProps {
 
 export function Card({ width, height, onClick, className, children, title }: CardProps) {
     const style: React.CSSProperties = {
-        width: width,
-        height: height,
+        width: width ? width : '100%',
+        height: height ? height : '100%',
         borderRadius: "17px"
     };
 
@@ -30,9 +30,7 @@ export function Card({ width, height, onClick, className, children, title }: Car
         <div>
             {title && (<h4>{title}</h4>)}
             <div className={className + " card"} style={style} onClick={onClickHandler}>
-                <div className="card-body">
-                    {children}
-                </div>
+                {children}
             </div>
         </div>
 

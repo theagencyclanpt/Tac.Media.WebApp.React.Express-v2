@@ -1,4 +1,3 @@
-export * from "./BannerConfiguration";
 export * from "./BannerConfigurationInput";
 export * from "./BannerConfigurationInputText";
 export * from "./GenerateBannerUrlRequest";

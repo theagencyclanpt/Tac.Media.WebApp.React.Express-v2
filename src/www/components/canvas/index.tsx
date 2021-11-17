@@ -5,29 +5,30 @@ type DrawElementType = "shape" | "image" | "text";
 type DrawElementTextAlign = "center" | "rigth" | "left";
 
 export interface DrawElementText {
-    color: string,
-    font: string,
-    textAlign: DrawElementTextAlign,
-    value: string | number,
+    Color: string,
+    Font: string,
+    TextAlign: DrawElementTextAlign,
+    Value: string,
 }
 
 export interface DrawElementImage {
-    width: number,
-    height: number,
-    image: string,
+    Width: number,
+    Height: number,
+    Image: string,
 }
 
 export interface DrawElementShapeRect {
-    width: number,
-    height: number,
-    color: string,
+    Width: number,
+    Height: number,
+    Color: string,
 }
 
 export interface DrawElement {
-    type: DrawElementType,
-    x: number,
-    y: number,
-    extra: DrawElementText | DrawElementImage | DrawElementShapeRect
+    Id: string;
+    Type: DrawElementType,
+    X: number,
+    Y: number,
+    Extra: DrawElementText | DrawElementImage | DrawElementShapeRect
 }
 
 interface Props {
@@ -52,25 +53,33 @@ export function Canvas({ OnRender, BackgroundImage, DrawElements }: Props): JSX.
             canvas.height = backgroundImageElement.height;
             context.drawImage(backgroundImageElement, 0, 0);
 
+            console.log(DrawElements);
 
             if (DrawElements && DrawElements.length > 0) {
                 DrawElements.forEach((element) => {
 
-                    switch (element.type) {
+                    switch (element.Type) {
                         case "shape":
-                            context.fillStyle = (element.extra as DrawElementShapeRect).color;
+                            context.fillStyle = (element.Extra as DrawElementShapeRect).Color;
                             context.fillRect(
-                                element.x,
-                                element.y,
-                                (element.extra as DrawElementShapeRect).width,
-                                (element.extra as DrawElementShapeRect).height
+                                element.X,
+                                element.Y,
+                                (element.Extra as DrawElementShapeRect).Width,
+                                (element.Extra as DrawElementShapeRect).Height
                             );
                             break;
                         case "image":
 
                             break;
                         case "text":
+                            if ((element.Extra as DrawElementText).Font) {
+                                context.font = (element.Extra as DrawElementText).Font;
+                            }
+                            if ((element.Extra as DrawElementText).Color) {
+                                context.fillStyle = (element.Extra as DrawElementText).Color;
+                            }
 
+                            context.fillText((element.Extra as DrawElementText).Value, element.X, element.Y);
                             break;
 
                         default:

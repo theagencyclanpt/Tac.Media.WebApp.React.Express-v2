@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { useLocalStorage } from "@/ui/hooks/persist.localstorage.hook";
 import { IStep, DynamicFormStruct } from "./IStep";
+import Button from '@material-ui/core/Button';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
+
+import "./style.scss";
 
 interface FormProgressWizardProps {
   Id: string;
@@ -13,27 +17,26 @@ interface FormProgressWizardProps {
 interface FormProgressWizardState {
   Steps: {
     [key: string]: DynamicFormStruct
-  }
+  },
+  NextButtonActive: boolean,
+  BackButtonActive: boolean
 }
 
 export function FormProgressWizard({ Id, Steps }: FormProgressWizardProps): JSX.Element {
   const [stepIndex, setStepIndex] = useState(0);
   const [formData, setFormData] = useState<FormProgressWizardState>({
-    Steps: {}
+    Steps: {},
+    NextButtonActive: true,
+    BackButtonActive: true,
   });
   const stepsLength = Object.keys(Steps).length;
 
   function onNextStep(): void {
-    console.log(Object.keys(Steps)[stepsLength - 1]);
-    Object.keys(Steps)
-
-
     setStepIndex(stepIndex + 1);
   }
 
   function onPreviusStep(): void {
     setStepIndex(stepIndex - 1);
-
   }
 
   function SetStepFormData(stepKey: string, formData: any): any {
@@ -71,10 +74,22 @@ export function FormProgressWizard({ Id, Steps }: FormProgressWizardProps): JSX.
   }
 
   return (
-    <div>
-      {Steps[stepIndex]({ useStepActions })}
-      <button onClick={onPreviusStep}>Previus</button>
-      <button onClick={onNextStep}>Next</button>
+    <div className="form-wizard-progress">
+      <div className="title">
+        <span >Tipo:</span>
+      </div>
+      <div className="content">
+        {Steps[stepIndex]({ useStepActions })}
+      </div>
+      <div className="footer">
+        <Button size="medium" onClick={onPreviusStep} disabled={!formData.NextButtonActive}>
+          <ArrowBackIosIcon />
+        </Button>
+        {stepIndex + 1 + "/" + stepsLength}
+        <Button size="medium" onClick={onNextStep} disabled={!formData.BackButtonActive}>
+          <ArrowForwardIos />
+        </Button>
+      </div>
     </div>
   );
 }
