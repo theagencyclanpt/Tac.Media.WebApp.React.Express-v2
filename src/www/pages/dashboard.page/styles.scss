@@ -81,12 +81,13 @@
 .banner-configuration-side__bar{
     background-color: white;
     height: 100%;
-    width: 380px;
+    width: 400px;
     border-right: 1px solid #e5e8eb;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 15px;
 }
 
 canvas { position: absolute; }

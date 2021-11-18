@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import ToggleButton from '@material-ui/core/ToggleButton';
 import ToggleButtonGroup from '@material-ui/core/ToggleButtonGroup';
 import Button from '@material-ui/core/Button';
+import CloudUploadOutlined from '@material-ui/icons/CloudUploadOutlined';
 
 interface DesktopLayoutProps {
   OnPulbish: () => void,
@@ -40,12 +41,19 @@ export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, Pre
     OnChangePreviewType(previewType);
   }
 
+  const control = {
+    value: alignment,
+    onChange: handleChange,
+    exclusive: true,
+  };
+
   return (
     <div className="layout">
 
       <div className="banner-configuration-side__bar">
-        <div style={{ marginBottom: "30px" }}>
+        <div style={{ marginBottom: "30px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
           <ToggleButtonGroup
+            fullWidth
             color="primary"
             value={alignment}
             exclusive
@@ -56,27 +64,49 @@ export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, Pre
           </ToggleButtonGroup>
         </div>
 
-        <div style={{ marginBottom: "30px" }}>
-          <TextField label="Campeonato" variant="outlined" size="small" onChange={(e) => OnFormChange(e.target.value, "lol")} />
-        </div>
-        <div style={{ marginBottom: "30px" }}>
-          <TextField label="Campeonato" variant="outlined" size="small" />
-        </div>
-        <div style={{ marginBottom: "30px" }}>
-          <TextField label="Campeonato" variant="outlined" size="small" />
-        </div>
-        <div style={{ marginBottom: "30px" }}>
-          <TextField label="Campeonato" variant="outlined" size="small" />
-        </div>
-        <div style={{ marginBottom: "30px" }}>
-          <TextField label="Campeonato" variant="outlined" size="small" />
-        </div>
-        <div style={{ marginBottom: "30px" }}>
-          <TextField label="Campeonato" variant="outlined" size="small" />
+        <div>
+          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
+            <ToggleButtonGroup size="medium" fullWidth {...control}>
+              <ToggleButton value="left" key="left">
+                <h1>Vitória</h1>
+              </ToggleButton>,
+              <ToggleButton value="center" key="center">
+                <h1>Empate</h1>
+              </ToggleButton>,
+              <ToggleButton value="right" key="right">
+                <h1>Derrota</h1>
+              </ToggleButton>,
+            </ToggleButtonGroup>
+          </div>
+          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
+            <TextField fullWidth label="Campeonato" variant="outlined" size="small" onChange={(e) => OnFormChange(e.target.value, "lol")} />
+          </div>
+          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+            <TextField label="Equipa 1" variant="outlined" size="small" />
+            <TextField label="Score" variant="outlined" size="small" style={{ width: "95px", marginLeft: "10px" }} />
+          </div>
+          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+            <TextField label="Equipa 2" variant="outlined" size="small" />
+            <TextField label="Score" variant="outlined" size="small" style={{ width: "95px", marginLeft: "10px" }} />
+          </div>
+          <div style={{ marginBottom: "10px", display: "flex", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
+            <Button color="warning" fullWidth variant="outlined" size="large" style={{ fontSize: "12px", display: "flex", flexDirection: "column", backgroundColor: "#FFFFFF", color: "black" }}>
+              <h3>Team1</h3>
+              <CloudUploadOutlined />
+            </Button>
+            <Button color="warning" fullWidth variant="outlined" size="large" style={{ fontSize: "12px", display: "flex", flexDirection: "column", backgroundColor: "#FFFFFF", marginLeft: "10px", color: "black" }} >
+              <h3>Team2</h3>
+              <CloudUploadOutlined />
+            </Button>
+            <Button color="warning" fullWidth variant="outlined" size="large" style={{ fontSize: "12px", display: "flex", flexDirection: "column", backgroundColor: "#FFFFFF", marginLeft: "10px", color: "black" }}>
+              <h2>Liga</h2>
+              <CloudUploadOutlined />
+            </Button>
+          </div>
         </div>
         <div style={{ marginBottom: "10px", display: "flex", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
-          <Button style={{ backgroundColor: "rgb(0, 171, 85)", boxShadow: "rgb(0 171 85 / 24%) 0px 8px 16px 0px", color: "white" }}>Download</Button>
-          <Button style={{ backgroundColor: "rgb(0, 171, 85)", boxShadow: "rgb(0 171 85 / 24%) 0px 8px 16px 0px", color: "white" }} onClick={OnPulbish}>Publish</Button>
+          <Button fullWidth size="large" variant="contained" color="error">Download</Button>
+          <Button fullWidth size="large" variant="contained" color="error" style={{ marginLeft: "10px" }} onClick={OnPulbish}>Publish</Button>
         </div>
       </div>
       <div className="preview-options">
