@@ -2,16 +2,38 @@
     "Id": 1,
     "Instagram": {
         "Layers": {
-            "0": "/resources/csgo.announce/twitter/Layer_1.png",
-            "1": "/resources/csgo.announce/twitter/Layer_2.png",
-            "3": "/resources/csgo.announce/twitter/Layer_3.png"
+            "0": "/resources/csgo.announce/instagram/Layer_1.png",
+            "1": "/resources/csgo.announce/instagram/Layer_2.png",
+            "3": "/resources/csgo.announce/instagram/Layer_3.png"
         },
         "Fields": [
             {
-                "Id": "lol",
+                "Id": "campeonato",
+                "Type": "text",
+                "X": 900,
+                "Y": 200,
+                "Extra": {
+                    "Color": "red",
+                    "Font": "120px Comic Sans MS",
+                    "Value": ""
+                }
+            },
+            {
+                "Id": "team1",
                 "Type": "text",
                 "X": 900,
                 "Y": 500,
+                "Extra": {
+                    "Color": "red",
+                    "Font": "120px Comic Sans MS",
+                    "Value": ""
+                }
+            },
+            {
+                "Id": "team2",
+                "Type": "text",
+                "X": 900,
+                "Y": 900,
                 "Extra": {
                     "Color": "red",
                     "Font": "120px Comic Sans MS",
@@ -28,10 +50,32 @@
         },
         "Fields": [
             {
-                "Id": "lol",
+                "Id": "campeonato",
                 "Type": "text",
-                "X": 50,
+                "X": 900,
+                "Y": 200,
+                "Extra": {
+                    "Color": "red",
+                    "Font": "120px Comic Sans MS",
+                    "Value": ""
+                }
+            },
+            {
+                "Id": "team1",
+                "Type": "text",
+                "X": 900,
                 "Y": 500,
+                "Extra": {
+                    "Color": "red",
+                    "Font": "120px Comic Sans MS",
+                    "Value": ""
+                }
+            },
+            {
+                "Id": "team2",
+                "Type": "text",
+                "X": 900,
+                "Y": 900,
                 "Extra": {
                     "Color": "red",
                     "Font": "120px Comic Sans MS",

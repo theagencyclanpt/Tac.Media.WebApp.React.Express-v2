@@ -1,13 +1,15 @@
 import React from 'react';
 import { Card } from "@/ui/components/card";
-import { PreviewType } from '..';
-import TextField from '@material-ui/core/TextField';
+import { PreviewType, BannerType } from '..';
 import ToggleButton from '@material-ui/core/ToggleButton';
 import ToggleButtonGroup from '@material-ui/core/ToggleButtonGroup';
 import Button from '@material-ui/core/Button';
-import CloudUploadOutlined from '@material-ui/icons/CloudUploadOutlined';
+import { AnnouncementFormComponent } from "./form/announcement.form";
+import { ResultFormComponent } from "./form/result.form";
 
 interface DesktopLayoutProps {
+  BannerType: BannerType,
+  ChangeBannerType: (value: string) => void,
   OnPulbish: () => void,
   PreviewInstagram: () => JSX.Element,
   PreviewTwitter: () => JSX.Element,
@@ -16,8 +18,7 @@ interface DesktopLayoutProps {
   OnFormChange: (value: any, id: string) => void
 }
 
-export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, PreviewType, OnChangePreviewType, OnFormChange }: DesktopLayoutProps): JSX.Element {
-
+export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, PreviewType, OnChangePreviewType, BannerType, OnFormChange, ChangeBannerType }: DesktopLayoutProps): JSX.Element {
   const previewSettings = {
     previewButtonInstagram: PreviewType === "instagram" ? "selected" : null,
     previewButtonTwitter: PreviewType === "twitter" ? "selected" : null,
@@ -31,21 +32,13 @@ export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, Pre
     }
   };
 
-  const [alignment, setAlignment] = React.useState('resultado');
-
-  function handleChange(event: any, newAlignment: any) {
-    setAlignment(newAlignment);
+  function handlerBannerTypeChange(event: any, newAlignment: any) {
+    ChangeBannerType(newAlignment);
   }
 
   function OnChangePreview(previewType: PreviewType) {
     OnChangePreviewType(previewType);
   }
-
-  const control = {
-    value: alignment,
-    onChange: handleChange,
-    exclusive: true,
-  };
 
   return (
     <div className="layout">
@@ -54,56 +47,18 @@ export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, Pre
         <div style={{ marginBottom: "30px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
           <ToggleButtonGroup
             fullWidth
-            color="primary"
-            value={alignment}
+            color="error"
+            value={BannerType}
             exclusive
-            onChange={handleChange}
+            onChange={handlerBannerTypeChange}
           >
-            <ToggleButton value="resultado">Resultado</ToggleButton>
-            <ToggleButton value="anuncio">Anuncio</ToggleButton>
+            <ToggleButton value="result" >Resultado</ToggleButton>
+            <ToggleButton value="announcement" >Anuncio</ToggleButton>
           </ToggleButtonGroup>
         </div>
 
-        <div>
-          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
-            <ToggleButtonGroup size="medium" fullWidth {...control}>
-              <ToggleButton value="left" key="left">
-                <h1>Vitória</h1>
-              </ToggleButton>,
-              <ToggleButton value="center" key="center">
-                <h1>Empate</h1>
-              </ToggleButton>,
-              <ToggleButton value="right" key="right">
-                <h1>Derrota</h1>
-              </ToggleButton>,
-            </ToggleButtonGroup>
-          </div>
-          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
-            <TextField fullWidth label="Campeonato" variant="outlined" size="small" onChange={(e) => OnFormChange(e.target.value, "lol")} />
-          </div>
-          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-            <TextField label="Equipa 1" variant="outlined" size="small" />
-            <TextField label="Score" variant="outlined" size="small" style={{ width: "95px", marginLeft: "10px" }} />
-          </div>
-          <div style={{ marginBottom: "16px", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-            <TextField label="Equipa 2" variant="outlined" size="small" />
-            <TextField label="Score" variant="outlined" size="small" style={{ width: "95px", marginLeft: "10px" }} />
-          </div>
-          <div style={{ marginBottom: "10px", display: "flex", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
-            <Button color="warning" fullWidth variant="outlined" size="large" style={{ fontSize: "12px", display: "flex", flexDirection: "column", backgroundColor: "#FFFFFF", color: "black" }}>
-              <h3>Team1</h3>
-              <CloudUploadOutlined />
-            </Button>
-            <Button color="warning" fullWidth variant="outlined" size="large" style={{ fontSize: "12px", display: "flex", flexDirection: "column", backgroundColor: "#FFFFFF", marginLeft: "10px", color: "black" }} >
-              <h3>Team2</h3>
-              <CloudUploadOutlined />
-            </Button>
-            <Button color="warning" fullWidth variant="outlined" size="large" style={{ fontSize: "12px", display: "flex", flexDirection: "column", backgroundColor: "#FFFFFF", marginLeft: "10px", color: "black" }}>
-              <h2>Liga</h2>
-              <CloudUploadOutlined />
-            </Button>
-          </div>
-        </div>
+        {BannerType == "announcement" ? <AnnouncementFormComponent OnFormChange={OnFormChange} /> : <ResultFormComponent />}
+
         <div style={{ marginBottom: "10px", display: "flex", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
           <Button fullWidth size="large" variant="contained" color="error">Download</Button>
           <Button fullWidth size="large" variant="contained" color="error" style={{ marginLeft: "10px" }} onClick={OnPulbish}>Publish</Button>
@@ -129,13 +84,13 @@ export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, Pre
       </div>
 
       <div className="layout-content">
-        <Card width={previewSettings.instagram.width} height={previewSettings.instagram.height} className="banner-card" isHidden={PreviewType === "twitter"}>
-          <div className="banner-preview banner-preview__desktop" >
+        <Card width={previewSettings.instagram.width} height={previewSettings.instagram.height} isHidden={PreviewType === "twitter"}>
+          <div className="banner-preview">
             {PreviewInstagram()}
           </div>
         </Card>
-        <Card width={previewSettings.twitter.width} height={previewSettings.twitter.height} className="banner-card" isHidden={PreviewType === "instagram"}>
-          <div className="banner-preview banner-preview__desktop" >
+        <Card width={previewSettings.twitter.width} height={previewSettings.twitter.height} isHidden={PreviewType === "instagram"}>
+          <div className="banner-preview">
             {PreviewTwitter()}
           </div>
         </Card>

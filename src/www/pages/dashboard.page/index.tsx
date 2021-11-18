@@ -4,6 +4,9 @@ import { Canvas, DrawElement, DrawElementText } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
 
 export type PreviewType = "instagram" | "twitter";
+
+export type BannerType = "announcement" | "result";
+
 interface BannerConfiguration {
     Layers: {
         [key: string]: string
@@ -13,6 +16,7 @@ interface BannerConfiguration {
 
 export function DashboardPage(): JSX.Element {
     const [previewType, setPreviewType] = useState<PreviewType>("twitter")
+    const [bannerType, setBannerType] = useState<BannerType>("announcement")
     const [instagramDrawElements, setinstagramDrawElements] = useState<DrawElement[]>();
     const [twitterDrawElements, setTwitterDrawElements] = useState<DrawElement[]>();
     const [instragramConfig, setInstragramConfig] = useState<BannerConfiguration>();
@@ -21,7 +25,9 @@ export function DashboardPage(): JSX.Element {
     const canvasInstagramRef = useRef(null);
 
     useEffect(() => {
-        fetch("/api/banner/group/configuration/1", {
+        const bannerTypeUrl = bannerType == "announcement" ? "1" : "2";
+
+        fetch("/api/banner/group/configuration/" + bannerTypeUrl, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -38,6 +44,30 @@ export function DashboardPage(): JSX.Element {
             }
             );
     }, []);
+
+    function changeBannerType(value: BannerType) {
+        setBannerType(value);
+
+        // const bannerTypeUrl = bannerType == "announcement" ? "1" : "2";
+
+        // fetch("/api/banner/group/configuration/" + bannerTypeUrl, {
+        //     method: "GET",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // })
+        //     .then(r => r.json())
+        //     .then(data => {
+        //         const result = data.result;
+        //         setinstagramDrawElements(result.Instagram.Fields);
+        //         setTwitterDrawElements(result.Twitter.Fields);
+        //         setInstragramConfig(result.Instagram);
+        //         setTwitterConfig(result.Twitter);
+
+        //     }
+        //     );
+    }
 
     async function getPublishUrl(): Promise<void> {
         const instagramImage = await canvasInstagramRef.current.RenderFinallyResult();
@@ -72,6 +102,7 @@ export function DashboardPage(): JSX.Element {
     }
 
     function onFormChange(value: any, id: string) {
+
         changeInstagramDrawElement(value, id);
         changeTwitterDrawElement(value, id);
     }
@@ -91,14 +122,12 @@ export function DashboardPage(): JSX.Element {
             default:
                 break;
         }
-
         setinstagramDrawElements(oldState);
     }
 
     function changeTwitterDrawElement(value: any, id: string) {
         const index = twitterDrawElements.findIndex(e => e.Id === id);
         const oldState = [...twitterDrawElements];
-
 
         if (index === -1)
             return;
@@ -118,6 +147,8 @@ export function DashboardPage(): JSX.Element {
     return (
         <>
             <DesktopLayout
+                BannerType={bannerType}
+                ChangeBannerType={changeBannerType}
                 OnPulbish={getPublishUrl}
                 OnChangePreviewType={onChangePreviewType}
                 PreviewType={previewType}

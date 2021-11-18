@@ -19,22 +19,14 @@
 }
 
 .banner {
-    &-card{
-       margin: 24px;
-       background-color: #F4F4F4;
-       box-shadow: 0px 4px 17px rgba(0, 0, 0, 0.048);
-    }
-
     &-preview {
         display: flex;
         height: 100%;
         width: 100%;
-
-        &__desktop{
-            position: relative;
-            align-items: center;
-            justify-content: center;
-        }
+        position: relative;
+        align-items: center;
+        justify-content: center;
+   
     }
 }
 
