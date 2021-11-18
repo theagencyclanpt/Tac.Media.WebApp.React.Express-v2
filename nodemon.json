@@ -5,6 +5,6 @@
     "watch": [
         "src/"
     ],
-    "ext": "ts",
+    "ext": "ts,json",
     "exec": "ts-node -r tsconfig-paths/register -P ./tsconfig.server.json ./src/main.ts"
 }

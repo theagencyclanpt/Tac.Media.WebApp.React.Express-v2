@@ -81,6 +81,37 @@
                     "Font": "120px Comic Sans MS",
                     "Value": ""
                 }
+            },
+            {
+                "Id": "team1logo",
+                "Type": "image",
+                "X": 44,
+                "Y": 704,
+                "Extra": {
+                    "Image": "",
+                    "Width": 160,
+                    "Height": 160
+                }
+            },
+            {
+                "Id": "team2logo",
+                "Type": "image",
+                "X": 374,
+                "Y": 704,
+                "Extra": {
+                    "Image": "",
+                    "Width": 160,
+                    "Height": 160
+                }
+            },
+            {
+                "Id": "ligalogo",
+                "Type": "image",
+                "X": 574,
+                "Y": 754,
+                "Extra": {
+                    "Image": ""
+                }
             }
         ]
     }

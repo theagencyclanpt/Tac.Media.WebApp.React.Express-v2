@@ -74,7 +74,11 @@ const Canvas = forwardRef(({ Layers, DrawElements, Width, Height }: Props, ref) 
                     img.src = (e.Value.Extra as DrawElementImage).Image;
                     img.crossOrigin = "anonymous";
                     img.onload = function () {
-                        context.drawImage(img, e.Value.X, e.Value.Y);
+                        if ((e.Value.Extra as DrawElementImage).Width && (e.Value.Extra as DrawElementImage).Height) {
+                            context.drawImage(img, e.Value.X, e.Value.Y, (e.Value.Extra as DrawElementImage).Width, (e.Value.Extra as DrawElementImage).Height);
+                        } else {
+                            context.drawImage(img, e.Value.X, e.Value.Y);
+                        }
                     };
                     break;
                 case "text":

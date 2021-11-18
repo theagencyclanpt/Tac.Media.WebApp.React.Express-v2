@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./styles.scss";
-import { Canvas, DrawElement, DrawElementText } from "@/ui/components/canvas";
+import { Canvas, DrawElement, DrawElementImage, DrawElementText } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
 
 export type PreviewType = "instagram" | "twitter";
@@ -118,10 +118,14 @@ export function DashboardPage(): JSX.Element {
             case "text":
                 (oldState[index].Extra as DrawElementText).Value = value;
                 break;
+            case "image":
+                (oldState[index].Extra as DrawElementImage).Image = value;
+                break;
 
             default:
                 break;
         }
+
         setinstagramDrawElements(oldState);
     }
 
@@ -137,6 +141,9 @@ export function DashboardPage(): JSX.Element {
                 (oldState[index].Extra as DrawElementText).Value = value;
                 break;
 
+            case "image":
+                (oldState[index].Extra as DrawElementImage).Image = value;
+                break;
             default:
                 break;
         }
