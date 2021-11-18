@@ -5,26 +5,29 @@ import TextField from '@material-ui/core/TextField';
 import ToggleButton from '@material-ui/core/ToggleButton';
 import ToggleButtonGroup from '@material-ui/core/ToggleButtonGroup';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
 
 interface DesktopLayoutProps {
   OnPulbish: () => void,
-  PreviewImgElement: JSX.Element,
+  PreviewInstagram: () => JSX.Element,
+  PreviewTwitter: () => JSX.Element,
   PreviewType: PreviewType,
   OnChangePreviewType: (previewType: PreviewType) => void
   OnFormChange: (value: any, id: string) => void
 }
 
-export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnChangePreviewType, OnFormChange }: DesktopLayoutProps): JSX.Element {
+export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, PreviewType, OnChangePreviewType, OnFormChange }: DesktopLayoutProps): JSX.Element {
 
   const previewSettings = {
-    width: PreviewType === "twitter" ? 979 : 400,
-    height: PreviewType === "twitter" ? 580 : 704,
     previewButtonInstagram: PreviewType === "instagram" ? "selected" : null,
-    previewButtonTwitter: PreviewType === "twitter" ? "selected" : null
+    previewButtonTwitter: PreviewType === "twitter" ? "selected" : null,
+    instagram: {
+      width: 400,
+      height: 704
+    },
+    twitter: {
+      width: 979,
+      height: 580
+    }
   };
 
   const [alignment, setAlignment] = React.useState('resultado');
@@ -96,14 +99,16 @@ export function DesktopLayout({ OnPulbish, PreviewImgElement, PreviewType, OnCha
       </div>
 
       <div className="layout-content">
-        <Card width={previewSettings.width} height={previewSettings.height} className="banner-card" >
+        <Card width={previewSettings.instagram.width} height={previewSettings.instagram.height} className="banner-card" isHidden={PreviewType === "twitter"}>
           <div className="banner-preview banner-preview__desktop" >
-            {PreviewImgElement}
+            {PreviewInstagram()}
           </div>
         </Card>
-
-
-
+        <Card width={previewSettings.twitter.width} height={previewSettings.twitter.height} className="banner-card" isHidden={PreviewType === "instagram"}>
+          <div className="banner-preview banner-preview__desktop" >
+            {PreviewTwitter()}
+          </div>
+        </Card>
       </div>
     </div>
   );

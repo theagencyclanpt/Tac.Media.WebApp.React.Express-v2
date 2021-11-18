@@ -1,7 +1,11 @@
 {
     "Id": 1,
     "Instagram": {
-        "BackgroundImage": "/resources/background/insta.announcement.png",
+        "Layers": {
+            "0": "/resources/csgo.announce/twitter/Layer_1.png",
+            "1": "/resources/csgo.announce/twitter/Layer_2.png",
+            "3": "/resources/csgo.announce/twitter/Layer_3.png"
+        },
         "Fields": [
             {
                 "Id": "lol",
@@ -10,13 +14,18 @@
                 "Y": 500,
                 "Extra": {
                     "Color": "red",
-                    "Font": "120px Comic Sans MS"
+                    "Font": "120px Comic Sans MS",
+                    "Value": ""
                 }
             }
         ]
     },
     "Twitter": {
-        "BackgroundImage": "/resources/background/twitter.announcement.png",
+        "Layers": {
+            "0": "/resources/csgo.announce/twitter/Layer_1.png",
+            "1": "/resources/csgo.announce/twitter/Layer_2.png",
+            "2": "/resources/csgo.announce/twitter/Layer_3.png"
+        },
         "Fields": [
             {
                 "Id": "lol",
@@ -25,7 +34,8 @@
                 "Y": 500,
                 "Extra": {
                     "Color": "red",
-                    "Font": "120px Comic Sans MS"
+                    "Font": "120px Comic Sans MS",
+                    "Value": ""
                 }
             }
         ]

@@ -7,13 +7,14 @@ interface CardProps {
     onClick?: () => void | undefined,
     children?: React.ReactNode;
     title?: string;
+    isHidden?: boolean;
 }
 
-export function Card({ width, height, onClick, className, children, title }: CardProps) {
+export function Card({ width, height, onClick, className, children, title, isHidden }: CardProps) {
     const style: React.CSSProperties = {
         width: width ? width : '100%',
         height: height ? height : '100%',
-        borderRadius: "17px"
+        borderRadius: "17px",
     };
 
     if (onClick) {
@@ -27,7 +28,7 @@ export function Card({ width, height, onClick, className, children, title }: Car
     }
 
     return (
-        <div>
+        <div style={{ display: isHidden ? "none" : "block" }}>
             {title && (<h4>{title}</h4>)}
             <div className={className + " card"} style={style} onClick={onClickHandler}>
                 {children}

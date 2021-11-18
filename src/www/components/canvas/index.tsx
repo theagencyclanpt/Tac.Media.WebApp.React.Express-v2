@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 type DrawElementType = "shape" | "image" | "text";
 
@@ -33,65 +33,97 @@ export interface DrawElement {
 
 interface Props {
     OnRender: (image: string) => void,
-    BackgroundImage: string,
+    Width: number,
+    Height: number,
+    Layers: {
+        [key: string]: string
+    },
     DrawElements?: DrawElement[]
 }
 
-export function Canvas({ OnRender, BackgroundImage, DrawElements }: Props): JSX.Element {
-    const canvasRef = useRef(null);
+interface ICanvasStack {
+    Ref: any,
+    Element: any,
+    Value: DrawElement
+}
 
-    React.useEffect(() => {
-        const canvas = canvasRef.current as HTMLCanvasElement;
-        const context = canvas.getContext("2d");
+export function Canvas({ OnRender, Layers, DrawElements, Width, Height }: Props): JSX.Element {
+    const canvasStack: ICanvasStack[] = [];
 
-        const backgroundImageElement = new Image();
-        backgroundImageElement.src = BackgroundImage;
-        backgroundImageElement.crossOrigin = "anonymous";
+    useEffect(() => {
+        canvasStack.forEach(e => {
+            const canvas = e.Ref.current as HTMLCanvasElement;
+            const context = canvas.getContext("2d");
 
-        backgroundImageElement.onload = function () {
-            canvas.width = backgroundImageElement.width;
-            canvas.height = backgroundImageElement.height;
-            context.drawImage(backgroundImageElement, 0, 0);
-
-            console.log(DrawElements);
-
-            if (DrawElements && DrawElements.length > 0) {
-                DrawElements.forEach((element) => {
-
-                    switch (element.Type) {
-                        case "shape":
-                            context.fillStyle = (element.Extra as DrawElementShapeRect).Color;
-                            context.fillRect(
-                                element.X,
-                                element.Y,
-                                (element.Extra as DrawElementShapeRect).Width,
-                                (element.Extra as DrawElementShapeRect).Height
-                            );
-                            break;
-                        case "image":
-
-                            break;
-                        case "text":
-                            if ((element.Extra as DrawElementText).Font) {
-                                context.font = (element.Extra as DrawElementText).Font;
-                            }
-                            if ((element.Extra as DrawElementText).Color) {
-                                context.fillStyle = (element.Extra as DrawElementText).Color;
-                            }
-
-                            context.fillText((element.Extra as DrawElementText).Value, element.X, element.Y);
-                            break;
-
-                        default:
-                            throw new Error("Invalid draw element type.");
+            switch (e.Value.Type) {
+                case "shape":
+                    context.fillStyle = (e.Value.Extra as DrawElementShapeRect).Color;
+                    context.fillRect(
+                        e.Value.X,
+                        e.Value.Y,
+                        (e.Value.Extra as DrawElementShapeRect).Width,
+                        (e.Value.Extra as DrawElementShapeRect).Height
+                    );
+                    break;
+                case "image":
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    const img = new Image((e.Value.Extra as DrawElementImage).Width, (e.Value.Extra as DrawElementImage).Height);
+                    img.src = (e.Value.Extra as DrawElementImage).Image;
+                    img.crossOrigin = "anonymous";
+                    img.onload = function () {
+                        context.drawImage(img, e.Value.X, e.Value.Y);
+                    };
+                    break;
+                case "text":
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    if ((e.Value.Extra as DrawElementText).Font) {
+                        context.font = (e.Value.Extra as DrawElementText).Font;
+                    }
+                    if ((e.Value.Extra as DrawElementText).Color) {
+                        context.fillStyle = (e.Value.Extra as DrawElementText).Color;
                     }
 
-                });
+                    context.fillText((e.Value.Extra as DrawElementText).Value, e.Value.X, e.Value.Y);
+                    break;
+                default:
+                    throw new Error("Invalid draw element type.");
             }
+        });
+    })
 
-            OnRender(canvas.toDataURL());
-        };
-    });
+    function Render(): JSX.Element[] {
+        const layersKeys = Object.keys(Layers);
 
-    return <canvas style={{ display: "none" }} ref={canvasRef} />;
+        layersKeys.forEach((e, idx) => {
+            const ref = useRef(null);
+            canvasStack.push({
+                Value: {
+                    Type: "image",
+                    X: 0,
+                    Y: 0,
+                    Id: e,
+                    Extra: {
+                        Image: Layers[e]
+                    } as DrawElementImage
+                },
+                Ref: ref,
+                Element: <canvas key={idx} ref={ref} width={Width} height={Height}></canvas>
+            });
+        });
+
+        DrawElements.forEach((e, idx) => {
+            const ref = useRef(null);
+            canvasStack.push({
+                Value: e,
+                Ref: ref,
+                Element: <canvas key={e.Id} ref={ref} width={Width} height={Height}></canvas>
+            });
+        });
+
+        return canvasStack.map(a => a.Element);
+    }
+
+    return <>
+        {Render()}
+    </>;
 }

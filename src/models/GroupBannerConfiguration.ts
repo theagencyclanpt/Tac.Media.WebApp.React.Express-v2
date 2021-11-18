@@ -3,7 +3,9 @@ export interface ConfigurationSocialMediaField {
 }
 
 export interface ConfigurationSocialMedia {
-    BackgroundImage: string;
+    Layers: {
+        [key: string]: string
+    };
     Fields: ConfigurationSocialMediaField[]
 }
 

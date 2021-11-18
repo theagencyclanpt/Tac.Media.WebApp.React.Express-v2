@@ -3,29 +3,25 @@ import "./styles.scss";
 import { Canvas, DrawElement, DrawElementText } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
 
-interface CanvasProps {
-    Background: string;
-    Overlay?: string;
-    Font?: string;
-    OnRender?: (image: string) => void;
-}
-
 export type PreviewType = "instagram" | "twitter";
-
 interface BannerConfiguration {
-    BackgroundImage: string;
+    Layers: {
+        [key: string]: string
+    };
     Fields: DrawElement[]
 }
 
 export function DashboardPage(): JSX.Element {
-    const [previewType, setPreviewType] = useState<PreviewType>("instagram")
-    const [drawElements, setDrawElements] = useState<DrawElement[]>([] as DrawElement[]);
-    const [canvasProps, setCanvasProps] = useState<CanvasProps>();
-    const [instagramSettings, setInstagramSettings] = useState<BannerConfiguration>();
-    const [twitterSettings, setTwitterSettings] = useState<BannerConfiguration>();
+    const [previewType, setPreviewType] = useState<PreviewType>("twitter")
+    const [instagramDrawElements, setinstagramDrawElements] = useState<DrawElement[]>();
+    const [twitterDrawElements, setTwitterDrawElements] = useState<DrawElement[]>();
+    const [instragramConfig, setInstragramConfig] = useState<BannerConfiguration>();
+    const [twitterConfig, setTwitterConfig] = useState<BannerConfiguration>();
 
-    const previewImgRef = useRef(null);
-    const previewImgElement = (<img ref={previewImgRef} crossOrigin="anonymous" />);
+    const previewInstagramImgElementRef = useRef(null);
+    const previewTwitterImgElementRef = useRef(null);
+    const previewInstagramImgElement = (<img ref={previewInstagramImgElementRef} crossOrigin="anonymous" />);
+    const previewTwitterImgElement = (<img ref={previewTwitterImgElementRef} crossOrigin="anonymous" />);
 
     useEffect(() => {
         fetch("/api/banner/group/configuration/1", {
@@ -38,18 +34,10 @@ export function DashboardPage(): JSX.Element {
             .then(r => r.json())
             .then(data => {
                 const result = data.result;
-
-                setInstagramSettings(result.Instagram);
-                setTwitterSettings(result.Twitter);
-
-                setPreviewType("instagram");
-
-                setCanvasProps({
-                    Background: result.Instagram.BackgroundImage,
-                    Overlay: null,
-                    Font: result.Instagram.Font,
-                    OnRender: onRender
-                });
+                setInstragramConfig(result.Instagram);
+                setTwitterConfig(result.Twitter);
+                setinstagramDrawElements(result.Instagram.Fields);
+                setTwitterDrawElements(result.Twitter.Fields);
             }
             );
     }, []);
@@ -86,9 +74,9 @@ export function DashboardPage(): JSX.Element {
         //     Font: instagramSettings.Font,
         //     OnRender: (instagramImage: string) => {
         //         setCanvasProps({
-        //             Background: twitterSettings.Background,
-        //             Overlay: twitterSettings.Overlay,
-        //             Font: twitterSettings.Font,
+        //             Background: twitterDrawElements.Background,
+        //             Overlay: twitterDrawElements.Overlay,
+        //             Font: twitterDrawElements.Font,
         //             OnRender: async (twitterImage: string) => {
         //                 await getPublishUrl(instagramImage, twitterImage);
         //             }
@@ -97,60 +85,95 @@ export function DashboardPage(): JSX.Element {
         // });
     }
 
-    function onRender(image: string) {
-        previewImgRef.current.src = image;
+    function onInstagramRender(image: string) {
+        previewInstagramImgElementRef.current.src = image;
     }
 
-    function OnChangePreviewType(previewType: PreviewType) {
-        function customRender(image: string) {
-            setPreviewType(previewType);
-            onRender(image);
-        }
-
-        if (previewType === "instagram") {
-            setCanvasProps({
-                Background: instagramSettings.BackgroundImage,
-                Font: null,
-                OnRender: customRender
-            });
-        } else if (previewType === "twitter") {
-            setCanvasProps({
-                Background: twitterSettings.BackgroundImage,
-                Font: null,
-                OnRender: customRender
-            });
-        }
+    function onTwitterRender(image: string) {
+        previewTwitterImgElementRef.current.src = image;
     }
 
-    function OnFormChange(value: any, id: string) {
-        const config = instagramSettings.Fields.find(e => e.Id === id);
+    function onChangePreviewType(previewType: PreviewType) {
+        setPreviewType(previewType);
+    }
 
-        switch (config.Type) {
+    function onFormChange(value: any, id: string) {
+        changeInstagramDrawElement(value, id);
+        changeTwitterDrawElement(value, id);
+    }
+
+    function changeInstagramDrawElement(value: any, id: string) {
+        const index = instagramDrawElements.findIndex(e => e.Id === id);
+        const oldState = [...instagramDrawElements];
+
+        if (index === -1)
+            return;
+
+        switch (instagramDrawElements[index].Type) {
             case "text":
-                (config.Extra as DrawElementText).Value = value;
+                (oldState[index].Extra as DrawElementText).Value = value;
                 break;
 
             default:
                 break;
         }
 
+        setinstagramDrawElements(oldState);
+    }
 
-        setDrawElements([config]);
+    function changeTwitterDrawElement(value: any, id: string) {
+        const index = twitterDrawElements.findIndex(e => e.Id === id);
+        const oldState = [...twitterDrawElements];
+
+
+        if (index === -1)
+            return;
+
+        switch (twitterDrawElements[index].Type) {
+            case "text":
+                (oldState[index].Extra as DrawElementText).Value = value;
+                break;
+
+            default:
+                break;
+        }
+
+        setTwitterDrawElements(oldState);
     }
 
     return (
         <>
-            {canvasProps && <Canvas
-                OnRender={canvasProps.OnRender}
-                BackgroundImage={canvasProps.Background}
-                DrawElements={drawElements}
-            />}
+            {/* {instagramDrawElements && <Canvas
+                Width={1080}
+                Height={1920}
+                OnRender={onInstagramRender}
+                Layers={instragramConfig.Layers}
+                DrawElements={instagramDrawElements}
+            />} */}
+
             <DesktopLayout
                 OnPulbish={onPublish}
-                OnChangePreviewType={OnChangePreviewType}
+                OnChangePreviewType={onChangePreviewType}
                 PreviewType={previewType}
-                PreviewImgElement={previewImgElement}
-                OnFormChange={OnFormChange}
+                PreviewInstagram={(): JSX.Element => {
+                    return twitterDrawElements && <Canvas
+                        Height={1920}
+                        Width={1080}
+                        OnRender={onTwitterRender}
+                        Layers={twitterConfig.Layers}
+                        DrawElements={twitterDrawElements}
+                    />
+                }}
+                PreviewTwitter={(): JSX.Element => {
+                    return twitterDrawElements && <Canvas
+                        Height={1080}
+                        Width={1920}
+                        OnRender={onTwitterRender}
+                        Layers={twitterConfig.Layers}
+                        DrawElements={twitterDrawElements}
+                    />
+                }}
+                OnFormChange={onFormChange}
             />
         </>
     );
