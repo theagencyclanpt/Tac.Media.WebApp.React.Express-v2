@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "./styles.scss";
 import { Canvas, DrawElement, DrawElementText } from "@/ui/components/canvas";
 import { DesktopLayout } from "./desktop.layout";
@@ -17,11 +17,8 @@ export function DashboardPage(): JSX.Element {
     const [twitterDrawElements, setTwitterDrawElements] = useState<DrawElement[]>();
     const [instragramConfig, setInstragramConfig] = useState<BannerConfiguration>();
     const [twitterConfig, setTwitterConfig] = useState<BannerConfiguration>();
-
-    const previewInstagramImgElementRef = useRef(null);
-    const previewTwitterImgElementRef = useRef(null);
-    const previewInstagramImgElement = (<img ref={previewInstagramImgElementRef} crossOrigin="anonymous" />);
-    const previewTwitterImgElement = (<img ref={previewTwitterImgElementRef} crossOrigin="anonymous" />);
+    const canvasTwitterRef = useRef(null);
+    const canvasInstagramRef = useRef(null);
 
     useEffect(() => {
         fetch("/api/banner/group/configuration/1", {
@@ -42,7 +39,10 @@ export function DashboardPage(): JSX.Element {
             );
     }, []);
 
-    async function getPublishUrl(instagramImage: string, twitterImage: string): Promise<void> {
+    async function getPublishUrl(): Promise<void> {
+        const instagramImage = await canvasInstagramRef.current.RenderFinallyResult();
+        const twitterImage = await canvasTwitterRef.current.RenderFinallyResult();
+
         if (instagramImage && twitterImage) {
             const result = await fetch("/api/banner/generate-url", {
                 method: "POST",
@@ -65,32 +65,6 @@ export function DashboardPage(): JSX.Element {
             const resultData = await result.json();
             navigator.clipboard.writeText(window.location.origin + resultData.result)
         }
-    }
-
-    function onPublish(): void {
-        // setCanvasProps({
-        //     Background: instagramSettings.Background,
-        //     Overlay: instagramSettings.Overlay,
-        //     Font: instagramSettings.Font,
-        //     OnRender: (instagramImage: string) => {
-        //         setCanvasProps({
-        //             Background: twitterDrawElements.Background,
-        //             Overlay: twitterDrawElements.Overlay,
-        //             Font: twitterDrawElements.Font,
-        //             OnRender: async (twitterImage: string) => {
-        //                 await getPublishUrl(instagramImage, twitterImage);
-        //             }
-        //         });
-        //     }
-        // });
-    }
-
-    function onInstagramRender(image: string) {
-        previewInstagramImgElementRef.current.src = image;
-    }
-
-    function onTwitterRender(image: string) {
-        previewTwitterImgElementRef.current.src = image;
     }
 
     function onChangePreviewType(previewType: PreviewType) {
@@ -143,32 +117,24 @@ export function DashboardPage(): JSX.Element {
 
     return (
         <>
-            {/* {instagramDrawElements && <Canvas
-                Width={1080}
-                Height={1920}
-                OnRender={onInstagramRender}
-                Layers={instragramConfig.Layers}
-                DrawElements={instagramDrawElements}
-            />} */}
-
             <DesktopLayout
-                OnPulbish={onPublish}
+                OnPulbish={getPublishUrl}
                 OnChangePreviewType={onChangePreviewType}
                 PreviewType={previewType}
                 PreviewInstagram={(): JSX.Element => {
-                    return twitterDrawElements && <Canvas
+                    return instagramDrawElements && <Canvas
+                        ref={canvasInstagramRef}
                         Height={1920}
                         Width={1080}
-                        OnRender={onTwitterRender}
-                        Layers={twitterConfig.Layers}
-                        DrawElements={twitterDrawElements}
+                        Layers={instragramConfig.Layers}
+                        DrawElements={instagramDrawElements}
                     />
                 }}
                 PreviewTwitter={(): JSX.Element => {
                     return twitterDrawElements && <Canvas
+                        ref={canvasTwitterRef}
                         Height={1080}
                         Width={1920}
-                        OnRender={onTwitterRender}
                         Layers={twitterConfig.Layers}
                         DrawElements={twitterDrawElements}
                     />

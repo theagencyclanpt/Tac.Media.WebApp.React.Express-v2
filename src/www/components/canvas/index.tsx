@@ -1,4 +1,6 @@
-import React, { useRef, useEffect } from "react";
+/* eslint-disable react/display-name */
+import { height } from "@material-ui/system";
+import React, { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 
 type DrawElementType = "shape" | "image" | "text";
 
@@ -32,7 +34,6 @@ export interface DrawElement {
 }
 
 interface Props {
-    OnRender: (image: string) => void,
     Width: number,
     Height: number,
     Layers: {
@@ -47,11 +48,13 @@ interface ICanvasStack {
     Value: DrawElement
 }
 
-export function Canvas({ OnRender, Layers, DrawElements, Width, Height }: Props): JSX.Element {
+const Canvas = forwardRef(({ Layers, DrawElements, Width, Height }: Props, ref) => {
+
+    const mainCanvas = useRef(null);
     const canvasStack: ICanvasStack[] = [];
 
     useEffect(() => {
-        canvasStack.forEach(e => {
+        canvasStack.forEach((e, idx) => {
             const canvas = e.Ref.current as HTMLCanvasElement;
             const context = canvas.getContext("2d");
 
@@ -91,7 +94,37 @@ export function Canvas({ OnRender, Layers, DrawElements, Width, Height }: Props)
         });
     })
 
-    function Render(): JSX.Element[] {
+    useImperativeHandle(
+        ref,
+        () => ({
+            RenderFinallyResult(): Promise<string> {
+                return new Promise((resolve, reject) => {
+                    const canvas = mainCanvas.current as HTMLCanvasElement;
+                    const context = canvas.getContext("2d");
+                    canvas.width = Width;
+                    canvas.height = Height;
+
+                    canvasStack.forEach((e, idx) => {
+                        const refImg = (e.Ref.current as HTMLCanvasElement).toDataURL();
+
+                        const img = new Image(Width, Height);
+                        img.src = refImg;
+                        img.onload = function () {
+                            context.drawImage(img, 0, 0);
+                        };
+
+                        if (idx == canvasStack.length - 1) {
+                            setTimeout(() => {
+                                resolve(canvas.toDataURL());
+                            }, 200);
+                        }
+                    });
+                });
+            }
+        }),
+    )
+
+    function RenderCanvas(): JSX.Element[] {
         const layersKeys = Object.keys(Layers);
 
         layersKeys.forEach((e, idx) => {
@@ -124,6 +157,11 @@ export function Canvas({ OnRender, Layers, DrawElements, Width, Height }: Props)
     }
 
     return <>
-        {Render()}
+        <canvas ref={mainCanvas} width={Width} height={Height} style={{ display: "none" }}></canvas>
+        {RenderCanvas()}
     </>;
-}
+})
+
+export {
+    Canvas
+};

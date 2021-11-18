@@ -76,7 +76,7 @@ export function DesktopLayout({ OnPulbish, PreviewInstagram, PreviewTwitter, Pre
         </div>
         <div style={{ marginBottom: "10px", display: "flex", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
           <Button style={{ backgroundColor: "rgb(0, 171, 85)", boxShadow: "rgb(0 171 85 / 24%) 0px 8px 16px 0px", color: "white" }}>Download</Button>
-          <Button style={{ backgroundColor: "rgb(0, 171, 85)", boxShadow: "rgb(0 171 85 / 24%) 0px 8px 16px 0px", color: "white" }}>Publish</Button>
+          <Button style={{ backgroundColor: "rgb(0, 171, 85)", boxShadow: "rgb(0 171 85 / 24%) 0px 8px 16px 0px", color: "white" }} onClick={OnPulbish}>Publish</Button>
         </div>
       </div>
       <div className="preview-options">
